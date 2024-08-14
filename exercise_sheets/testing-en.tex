@@ -1,0 +1,70 @@
+\documentclass[english]{sheet}
+
+\usepackage{enumerate}
+\usepackage{tikz}
+\usetikzlibrary{positioning,graphs,trees,matrix}
+\usetikzlibrary{arrows.meta}
+
+\tikzset{
+    >=Stealth[round],
+    commit/.style = {draw, circle, minimum size = 7mm},
+}
+
+\subtitle{Testing\textemdash{}PyTest}
+
+\begin{document}
+
+\maketitle
+
+\section{Installation}
+ Install pytest in your python environment. You can do this by running the following command:
+
+            \begin{minted}{sh}
+                $ pip install pytest
+            \end{minted}
+
+\section{"It works on my machine"}
+
+\begin{exercise}
+In this exercise, you will write your first unit test.
+    \begin{enumerate}
+        \item Clone the repository with the code that shall be tested.
+	\item Import the functions of \mintinline{sh}{app.py} into \mintinline{sh}{pytest}
+        \item Write unit tests to ensure that all methods work correctly. Can your tests identify the broken function?
+        \item Why are tests important? What can happen if code is not tested properly before it is merged?
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{sh}{git clone https://tum.de/}
+	\item To use the functions in the test, we need to import them in the test file with the following line: \mintinline{py}{from main import add, subtract, multiply, divide}
+        \item 
+            \begin{enumerate}
+                \item \begin{minted}{py} 
+			def test_add:
+				result = add(1, 2)
+				assert(result == 3)
+		\end{minted}
+		\item \begin{minted}{py} 
+				def test_subtract:
+					result = subtract(5, 10)
+					assert(result == -5)
+			\end{minted}
+		\item \begin{minted}{py} 
+				def test_multiply:
+					result = multiply(2, 2)
+					assert(result == 4)
+			\end{minted}
+		\item \begin{minted}{py} 
+				def test_divide:
+					result = divide(10, 5)
+					assert(result == 2)
+			\end{minted}
+            \end{enumerate}
+            You can run your tests by opening a terminal and using the following command: \mintinline{sh}{pytest}
+	\item If we do not test our code properly, it might break other components of the software. Therefore, tests are an important topic in quality assurance. The recent incident with cybersecurity company "Crowdstrike" shows what can happen if tests are not working as they should.
+    \end{enumerate}
+\end{solution}
+
+\end{document}

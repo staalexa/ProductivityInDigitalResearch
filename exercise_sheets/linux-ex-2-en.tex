@@ -1,0 +1,217 @@
+\documentclass[english]{sheet}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+
+\newcommand{\myline}[3][TUMBlack]{
+    \path(#2.south) --(#3.north)  coordinate[pos=0.4](mid);
+    \ifthenelse{\equal{#1}{black}}
+    {\draw[-latex, draw=#1] (#2.south) |- (mid) -| (#3.north);}
+    {\draw[-latex, draw=#1, very thick] (#2.south) |- (mid) -| (#3.north);}
+}
+
+\subtitle{Linux Exercise\textemdash Teil 2}
+
+\begin{document}
+
+\maketitle
+
+\textit{Exercises marked with a (*) are bonus tasks und should only be done if there is enough time left.}
+
+\section{Package Management}
+
+This part is about practicing the usage of package managers a little bit. Therefore we will install 3 small commands. Always check before installing a command if it is already installed. Just try to execute it once. This will tell you if the command is already installed, and if it is not, the resulting error message might give you some instructions on how to install the command with your package manager.
+
+\begin{exercise}
+    Please install the following commands:
+    \begin{enumerate}
+        \item \mintinline{text}{fortune}
+        \item \mintinline{text}{cowsay}
+        \item \mintinline{text}{sl}
+    \end{enumerate}
+    \textbf{Hinweis:} Users of
+    \begin{itemize}
+        \item \emph{Fedora} use the package manager \mintinline{text}{dnf}.
+        \item \emph{Ubuntu} use the package manager \mintinline{text}{apt}.
+        \item \emph{Windows} use the \emph{WSL}. The default Linux distribution of the \emph{WSL} is \emph{Ubuntu}. So you also use the package manager \mintinline{text}{apt}.
+        \item \emph{MacOS} use \myhref{https://brew.sh/}{Homebrew} (\mintinline{text}{brew}). You should have already installed this package manager during the first exercise. You can find help for the installation of individual commands if you search the Internet for e.g. "Homebrew fortune".
+    \end{itemize}
+\end{exercise}
+
+\begin{solution}
+    \emph{Fedora:}
+    \begin{itemize}
+        \item \mintinline{text}{sudo dnf install fortune-mod}
+        \item \mintinline{text}{sudo dnf install cowsay}
+        \item \mintinline{text}{sudo dnf install sl}
+    \end{itemize}
+    \emph{Ubuntu} bzw. \emph{Windows} (\emph{WSL}\,):
+    \begin{itemize}
+        \item \mintinline{text}{sudo apt install fortune-mod}
+        \item \mintinline{text}{sudo apt install cowsay}
+        \item \mintinline{text}{sudo apt install sl}
+    \end{itemize}
+    \emph{MacOS}:
+    \begin{itemize}
+        \item \mintinline{text}{brew install fortune}
+        \item \mintinline{text}{brew install cowsay}
+        \item \mintinline{text}{brew install sl}
+    \end{itemize}
+\end{solution}
+
+\section{Access Control}
+
+\begin{exercise}[subtitle=\texttt{chmod}]
+    First skim the \mintinline{text}{man} page for \mintinline{text}{chmod} and try the assignment of permissions with this \myhref{https://chmodcommand.com}{online~tool}. In what sense is the representation of permissions related to the \myhref{https://de.wikipedia.org/wiki/Oktalsystem}{octal~system}?
+
+    Answer the following questions:
+    \begin{enumerate}
+        \item Specify the numbers (from 0 to 7) that correspond to the following rights:
+        \begin{enumerate}
+            \item write and execute
+            \item read and execute
+            \item rw
+            \item x
+            \item read
+            \item no permissions
+        \end{enumerate}
+        \item Specify a \mintinline{text}{chmod} command to take away your own read and write permissions to a file \mintinline{text}{dummy.txt}. The execution rights should not be changed.
+        \item Specify a \mintinline{text}{chmod} command which gives only the group all permissions to a file \mintinline{text}{file}. Everyone else (including the owner) should not get any permissions.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    Since we always want to assign three types of ``binary'' permissions (\emph{read}, \emph{write}, \emph{execute}) per user/group/other, it makes sense to represent them in the octal system (since \(2^3 = 8\) and we can thus encode all three permissions in exactly one digit).
+
+    \begin{enumerate}
+        \item
+        \begin{enumerate}
+            \item 3
+            \item 5
+            \item 6
+            \item 1
+            \item 4
+            \item 0
+        \end{enumerate}
+        \item \texttt{chmod u-rw dummy.txt}
+        \item \texttt{chmod 070 file}
+    \end{enumerate}
+\end{solution}
+
+\section{SSH}
+In this section, we connect to the ``Rechnerhalle'' (computer room) and set up a few things.
+
+\begin{exercise}[subtitle=Establishing a Connection]
+    Use the command \mintinline{text}{ssh <rechnerkennung>@lxhalle.in.tum.de} to connect to the ``Rechnerhalle''.
+\end{exercise}
+
+\begin{exercise}[subtitle=(*) Change Password]
+    Change your password using \mintinline{text}{passwd}. Use a safe password which you can remember (or
+    better yet: use a password manager like \myhref{https://bitwarden.com/de-DE}{bitwarden} or \myhref{https://keepassxc.org}{KeePassXC}). Having to reset the password would be a hassle\ldots
+\end{exercise}
+
+\begin{exercise}[subtitle=SSH-Keys]
+    SSH keys are used to make connecting via SSH simpler. They allow quick and safe authorization.
+
+    In short, you have a ``private key'' and a ``private key''. As the names suggest, the private key is private and should \emph{never} be moved to another machine. The public key on the other hand can be given to anyone and is only useful if you also have access to the corresponding private key.
+
+    The commands entered in the following sections can be quite long. Remember to use the \emph{Tab} key to open options for autocompletion and that you can always cancel a command by using \emph{Ctrl+C}.
+
+    \begin{itemize}
+        \item Generate a new key pair on your device with the command \mintinline{text}{ssh-keygen -t ed25519}. You can just confirm the file names by pressing \emph{Enter} and do not need to change anything here (unless you want to, of course).
+        \item Now the public key has to be transmitted to the computer hall. The easiest
+        way to do this is by using the command\\\mintinline{text}{ssh-copy-id -i ~/.ssh/id\_ed25519 <rechnerkennung>@lxhalle.in.tum.de}.\footnote{In some cases, this easy way does not work and you have to explicitly copy the public key and paste it into file \mintinline{text}{~/.ssh/authorized_keys}}
+        \item You will now be prompted to enter your password for the ``Rechnerhalle''. You may also have to write ``yes'' to confirm that you trust the connection.
+        \item It should now be possible to connect to the Rechnerhalle without having to authorize yourself with the password of the ``Rechnerhalle'' (with the command\\\mintinline{text}{ssh <rechnerkennung>@lxhalle.in.tum.de}).
+    \end{itemize}
+\end{exercise}
+
+\section{Text Editing in the Terminal}
+
+\begin{exercise}[subtitle=\texttt{Nano}]
+    In this task you will use the terminal text editor \mintinline{text}{nano}. The basics of it's use have already been covered in the lecture. If you want to learn how to use it in more detail, you can also take a look at the \myhref{https://www.nano-editor.org/dist/latest/nano.pdf}{user's guide}.
+
+    First create an empty file named \mintinline{text}{nano-test.sh} with \mintinline{text}{touch}. Write the following with \mintinline{text}{nano} into the file you just created (no copy-paste):
+
+    \begin{minted}{sh}
+        #!/bin/sh
+
+        for i in 3 2 1
+        do
+          echo "T-$i"
+          sleep 1
+        done
+
+        fortune | cowsay
+    \end{minted}
+
+    Then, after closing \mintinline{text}{nano}, you can execute the file in the terminal with \mintinline{text}{./nano-test.sh}.
+\end{exercise}
+
+\begin{exercise}[subtitle=\texttt{vim}]
+    In this task you will use the terminal text editor \mintinline{text}{vim}. The basics of it's use have already been covered in the lecture. If you want to learn how to use it in more detail, you can execute the command \mintinline{text}{vimtutor}.
+
+    First create an empty file named \mintinline{text}{vim-test.sh} with \mintinline{text}{touch}. Write the following with \mintinline{text}{vim} into the file you just created (no copy-paste):
+
+    \begin{minted}{sh}
+        #!/bin/sh
+
+        echo "T: Ich mag Tee."
+        sleep 1.5
+        echo "A: Ich mag Züge!"
+        sleep 1.2
+
+        for i in 3 2 1
+        do
+          echo "chooga-chooga choo choo"
+          sleep $i
+        done
+
+        sl
+    \end{minted}
+
+    Then, after closing \mintinline{text}{vim}, you can execute the file in the terminal with \mintinline{text}{./vim-test.sh}.
+
+    We highly recommend to check out the following resources, if you are more interested in \mintinline{text}{vim}:
+
+    \begin{itemize}
+        \item \myhref{https://youtu.be/wlR5gYd6um0?si=qluCLCNoaD72DbWU}{Mastering the Vim Language}
+        \item \myhref{https://youtu.be/X6AR2RMB5tE?si=wo4Z_qdUd5dti1Ie}{Vim As Your Editor\textemdash Introduction}
+        \item \myhref{https://youtu.be/w7i4amO_zaE?si=XiDUVHZdouCOLZ0w}{0 to LSP: Neovim RC From Scratch}
+    \end{itemize}
+
+\end{exercise}
+
+\section{Handling Large Files/Outputs}
+
+\begin{exercise}[subtitle=Goethe's Faust]
+    For this task, you will find on \myhref{https://www.moodle.tum.de}{Moodle} a text file (\mintinline{text}{faust.txt}) of Goethe's ``Faust.~Der~Tragödie~erster~Teil''.
+    \begin{enumerate}
+        \item Try to print the file contents with \mintinline{text}{cat}. What do you notice?
+        \item To counteract the limitation of \mintinline{text}{cat}, open the file once with \mintinline{text}{more} and once with \mintinline{text}{less}.
+        \item Use \mintinline{text}{grep} to count the occurences of the substring ``Mephisto'' in the file \mintinline{text}{faust.txt}.
+        \item Use \mintinline{text}{grep} to count the occurences of the substring ``Gretchen'' in the file \mintinline{text}{faust.txt}.
+        \item Use \mintinline{text}{grep} to find a sentance containing the string ``studiert''.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item The terminal history cannot display the entire text of the file. It is therefore not possible to read the beginning of ``Faust''.
+        \item \mintinline{text}{more faust.txt} and \mintinline{text}{less faust.txt}. The primary concern here is to have a way to view the content meaningfully in the terminal. \mintinline{text}{less} is generally better.
+        \item \mintinline{text}{grep -c "Mephisto" faust.txt}\textemdash ``Mephisto'' occurs 30 times.
+        \item \mintinline{text}{grep -c "Gretchen" faust.txt}\textemdash ``Gretchen'' occurs 21 times.
+        \item \mintinline{text}{grep "studiert" faust.txt}
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=\texttt{grep} and Pipes]
+    The command \mintinline{text}{grep} is especially useful when another command produces a large and confusing output. We force such a situation by searching for ``lib'' with our package manager. This would, for example, list all possible libraries or ``libre'' (from ``liberty'') packages. We would trigger this ``forced'' search with \mintinline{text}{dnf search lib} on \emph{Fedora} (or \mintinline{text}{apt search lib} on \emph{Ubuntu}). Filter the output using \mintinline{text}{grep} to get only the results related to the audio format ``Vorbis'' (disregarding letter capitalization).
+\end{exercise}
+
+\begin{solution}
+    \mintinline{text}{dnf search lib | grep -i "vorbis"} resp. \mintinline{text}{apt search lib | grep -i "vorbis"}
+\end{solution}
+
+\end{document}
