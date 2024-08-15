@@ -1,0 +1,260 @@
+\documentclass[english]{sheet}
+
+\usepackage{enumerate}
+\usepackage{tikz}
+\usetikzlibrary{positioning,graphs,trees,matrix}
+\usetikzlibrary{arrows.meta}
+
+\tikzset{
+    >=Stealth[round],
+    commit/.style = {draw, circle, minimum size = 7mm},
+}
+
+\subtitle{Version Control\textemdash{}Git}
+
+\begin{document}
+
+\maketitle
+
+\section{Git Installation}
+
+\begin{exercise}
+    Install git on your computer. The download can be found here: \myurl{https://git-scm.com/downloads}.
+\end{exercise}
+
+\section{Git Local}
+
+\begin{exercise}
+    \begin{enumerate}
+        \item Create a local git repository in a new folder.
+        \item Create commits and branches, so that the following git history is built:
+            \begin{Center}
+                \begin{tikzpicture}
+                    \node (V1) [commit] {};
+
+                    \node (V2) [commit, above = 1cm of V1] {};
+                    \draw [<-] (V1) -- (V2);
+
+                    \node (V3) [commit, above = 1cm of V2] {};
+                    \draw [<-] (V2) -- (V3);
+
+                    \node (V4) [commit, right = 0.5cm of V3] {};
+                    \draw [<-] (V2) -- (V4);
+
+                    \node (V5) [commit, above = 1cm of V4] {};
+                    \draw [<-] (V4) -- (V5);
+
+                    \node (master) [left = 4mm of V3] {\textbf{master}};
+                    \draw [-Kite] (master) -- (V3);
+
+                    \node (head) [left = 4mm of master] {\textbf{HEAD}};
+                    \draw [-Kite] (head) -- (master);
+
+                    \node (feature) [right = 4mm of V5] {\textbf{feature}};
+                    \draw [-Kite] (feature) -- (V5);
+                \end{tikzpicture}
+            \end{Center}
+        \item Merge the \verb|feature| branch into \verb|master|. Afterwards, your git history should look like this:
+            \begin{Center}
+                \begin{tikzpicture}
+                    \node (V1) [commit] {};
+
+                    \node (V2) [commit, above = 1cm of V1] {};
+                    \draw [<-] (V1) -- (V2);
+
+                    \node (V3) [commit, above = 1cm of V2] {};
+                    \draw [<-] (V2) -- (V3);
+
+                    \node (V4) [commit, right = 0.5cm of V3] {};
+                    \draw [<-] (V2) -- (V4);
+
+                    \node (V5) [commit, above = 1cm of V4] {};
+                    \draw [<-] (V4) -- (V5);
+
+                    \node (tmp) [commit, above = 1cm of V3, draw = none] {};
+
+                    \node (MC) [commit, above = 1cm of tmp] {};
+                    \draw [<-] (V3) -- (MC);
+                    \draw [<-] (V5) -- (MC);
+
+                    \node (master) [left = 4mm of MC] {\textbf{master}};
+                    \draw [-Kite] (master) -- (MC);
+
+                    \node (head) [left = 4mm of master] {\textbf{HEAD}};
+                    \draw [-Kite] (head) -- (master);
+
+                    \node (feature) [right = 4mm of V5] {\textbf{feature}};
+                    \draw [-Kite] (feature) -- (V5);
+                \end{tikzpicture}
+            \end{Center}
+        \item Look at the \emph{diff} of your new merge commit. What do you notice?
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{sh}{git init} in a new folder.
+        \item The order of git commands is:
+            \begin{enumerate}[1.]
+                \item \mintinline{sh}{git commit} (creating the root commit)
+                \item \mintinline{sh}{git commit}
+                \item \mintinline{sh}{git checkout -b feature}
+                \item \mintinline{sh}{git commit}
+                \item \mintinline{sh}{git commit}
+                \item \mintinline{sh}{git checkout master}
+                \item \mintinline{sh}{git commit}
+            \end{enumerate}
+            With changes and a \mintinline{sh}{git add .} before every commit. Other orders are also possible.
+
+            You can verify if you have the correct result, by using \mintinline{sh}{git log --graph --all}.
+        \item \mintinline{sh}{git merge feature}
+        \item To show the diff of a commit, one can usually just use \mintinline{sh}{git show HEAD}. However, in this case we have a merge commit, where this does not work. The diff of a commit is always the set of changes w.r.t. the parent commit. Since a merge commit has 2 parents, you also have to specify which of the two parents you want to compare your commit to. To compare with just the first parent, you can use \mintinline{sh}{git show --first-parent HEAD} (or \mintinline{sh}{git diff HEAD~ HEAD}). Alternatively you can show the diffs with both parents with \mintinline{sh}{git show -m HEAD}.
+
+            One might notice that the diff shown with \mintinline{sh}{git show --first-parent HEAD} combines all changes done in the \verb|feature|\babelhyphen{nobreak}branch into one commit.
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle={Git GUIs (optional)}]
+    There are many GUIs for git that you can use:
+    \begin{itemize}
+        \item \myhref{https://desktop.github.com}{GitHub Desktop}
+        \item \myhref{https://www.gitkraken.com}{GitKraken} (Free with the \myhref{https://education.github.com/pack}{GitHub Student Pack})
+        \item \myhref{https://www.sourcetreeapp.com}{Sourcetree}
+        \item \myhref{https://www.sublimemerge.com}{Sublime Merge} (Not free but with a free test version without a time limit)
+        \item \myhref{https://git-scm.com/downloads/guis}{And many more\dots}
+    \end{itemize}
+
+    Many code editors also have a visual git integration. E.g. there exists the \myhref{https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph}{Git Graph} plugin for \myhref{https://code.visualstudio.com}{VSCode} that allows you to view a git graph visually.
+
+    We recommend using these tools to visualize git repositories, but to still familiarize yourself with the git CLI (Command Line Interface).
+\end{exercise}
+
+\section{Git mit Remotes}
+
+\begin{exercise}
+    Create an account for the service of your choice (\myhref{https://github.com}{GitHub}, \myhref{https://gitlab.com}{GitLab} or the \myhref{https://gitlab.lrz.de}{GitLab instance of the LRZ}).
+\end{exercise}
+
+\begin{exercise}[subtitle={Creation of a Github/Gitlab repository}]
+    \begin{enumerate}
+        \item Add your \verb|ssh| public key to your account.
+        \item Create a new repository on the service you chose.
+        \item Clone your repository.
+        \item Create a new commit and push that commit to the remote.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item How to add a \verb|ssh| key depends on the service:
+            \begin{itemize}
+                \item GitHub: Top right on the profile picture \textrightarrow{} Settings \textrightarrow{} SSH and GPG keys
+                \item GitLab: Top left on the profile picture \textrightarrow{} Preferences \textrightarrow{} SSH Keys
+            \end{itemize}
+        \item \begin{itemize}
+                \item GitHub: Profile picutre \textrightarrow{} Your repositories \textrightarrow{} New
+                \item GitLab: Top left on the GitLab logo \textrightarrow{} New project \textrightarrow{} Create blank project
+            \end{itemize}
+        \item On the website of the repository on Clone and then copy the SSH link.\\
+            Then: \mintinline{sh}{git clone <CLONE_URL>}.
+        \item \begin{minted}{sh}
+                git commit ...
+                git push
+            \end{minted}
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle={First Merge Conflict}]
+    This exercise is best solved with two people. If you do not have a partner, you can instead clone the repository twice in two different places on your computer. In the following we will use \textbf{S1} and \textbf{S2} to refer to the two students.
+    \begin{itemize}
+        \item Create a new repository on your service.
+        \item Invite your partner into your repository as a developer.
+        \item Clone the repository locally on your computers.
+        \item \textbf{S1:} Make a change in the repository, commit the change and push it.
+        \item \textbf{S2:} Pull the change of your partner.
+        \item Now both of you make changes in the same file (and commit the change as well). Let only \textbf{S1} push the change however.
+        \item \textbf{S2:} Pull the change of your partner. If you both worked on the same file, then you should now have a merge conflict. Solve it.
+    \end{itemize}
+\end{exercise}
+
+\section{Gitignore}
+
+\begin{exercise}
+    When you work on a project, usually not all files that are in your local project folder are actually supposed to be tracked in the git repository. E.g. configuration files of your editor are quite individual and not something your co-developers want.
+
+    As having to take care about which files you actually put into your staging area every time you commit is quite cumbersome, git allows you to tell it paths and files that it should ignore in a file named \verb|.gitignore|.
+    
+    You might also have noticed in the \LaTeX{}\babelhyphen{nobreak}exercises that compiling a \verb|.tex| file will create many auxiliary files. These files are a good example for what constitutes an entry in a \verb|.gitignore|.
+
+    \begin{enumerate}
+        \item Create a new folder, make it into a git repository and add a \verb|main.tex| file with the following content:
+            \begin{minted}{latex}
+                % main.tex
+                \documentclass{article}
+                \usepackage[utf8]{inputenc}
+                \usepackage[english]{babel}
+
+                \begin{document}
+                    Hello \LaTeX{}!
+                \end{document}
+            \end{minted}
+
+            Also create an empty \verb|.gitignore|.
+        \item Create an initial commit with both files as the diff.
+        \item Compile your \verb|main.tex| with \verb|pdflatex|.
+
+            You will notice that many auxiliary files have been created. If you now run \mintinline{sh}{git status}, git will show you all these auxiliary files as changes. Since these auxiliary files are all just temporary files, whereas the only relevant file for your project is actually your source file \verb|main.tex|, we usually don't want to commit these auxiliary files.
+        \item Look at the \myhref{https://git-scm.com/docs/gitignore}{gitignore documentation} and find out, what you have to write into the \verb|.gitignore| file, so that another run of \mintinline{sh}{git status} will not show any auxiliary files anymore.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item
+            \begin{minted}{sh}
+                $ mkdir myfolder
+                $ git init
+                $ vim main.tex # simply add the content shown in the exercise
+            \end{minted}
+        \item
+            \begin{minted}{sh}
+                $ git add main.tex
+                $ git commit -m "init"
+            \end{minted}
+        \item \mintinline{sh}{pdflatex main.tex}
+        \item First you have to figure out which aux files \verb|pdflatex| created. In this small example, these files are only \verb|main.aux|, \verb|main.log| and \verb|main.pdf|.
+
+            A \verb|.gitignore| could then look like this:
+            \begin{minted}{text}
+                main.aux
+                main.log
+                main.pdf
+            \end{minted}
+
+            However we can improve upon that. For example, you can use wildcards to abstract away the name of the \verb|.tex| file:
+            \begin{minted}{text}
+                *.aux
+                *.log
+                *.pdf
+            \end{minted}
+
+            These 3 files are by far not the only ones that \verb|pdflatex| might create. Especially for more complex documents, the number of auxiliary files might explode. Here are 2 possible ways to further improve the \verb|.gitignore|:
+            \begin{enumerate}[1.]
+                \item Using a website like \myurl{https://www.toptal.com/developers/gitignore} to create a \verb|.gitignore| with defaults set by the git community.
+                \item Calling \verb|pdflatex| with the \verb|-output-directory=out| option. Then the \verb|.gitignore| only has to contain a single \verb|out/|. However, \verb|pdflatex| expects the \verb|out| folder to exist, so you will have to create it by hand before compiling. Also you must take care to call \verb|pdflatex| with that option every time.
+            \end{enumerate}
+    \end{enumerate}
+\end{solution}
+
+
+\section{CI/CD}
+
+\begin{exercise}
+    While working on a larger project, seval people write different parts of code independently. Their work is merged in the way you have seen in the previous exercises. To ensure that the code is not only merged, but also works as intended, most repositories include a so called "CI/CD-pipeline". In this exercise, you will create your own pipeline to run Unit tests automatically after each commit.
+
+    TODO
+\end{exercise}
+
+
+
+\end{document}

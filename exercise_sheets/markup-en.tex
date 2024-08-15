@@ -1,0 +1,292 @@
+\documentclass[english]{sheet}
+
+\usepackage{enumerate}
+
+\subtitle{Markup Languages}
+
+\begin{document}
+
+\maketitle
+
+\section{\LaTeX{}}
+
+\begin{exercise}[subtitle={\LaTeX{} Setup}]
+    \label{ex:setup}
+    \begin{enumerate}
+        \item Install a \LaTeX{} distribution on your Computer. Which distribution you choose depends on your operating system:
+            \begin{itemize}
+                \item Linux: \myhref{https://tug.org/texlive}{Texlive} (with your package manager)
+                \item MacOS: \myhref{https://tug.org/mactex}{MacTeX}
+                \item Windows: \myhref{https://miktex.org}{MiKTeX}
+            \end{itemize}
+        \item Create a file \verb|main.tex| with the following content:
+            \begin{minted}{latex}
+                \documentclass{article}
+                \usepackage[utf8]{inputenc}
+                \usepackage[english]{babel}
+
+                \begin{document}
+                    Hello \LaTeX{}!
+                \end{document}
+            \end{minted}
+        \item Compile the file with \verb|pdflatex|
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    To compile \verb|main.tex| with \verb|pdflatex|, is suffices to run \mintinline{sh}{pdflatex main.tex}.
+\end{solution}
+
+\begin{exercise}[subtitle={\LaTeX{} Math}]
+    A list of mathematical constructs in \LaTeX{} can be found \myhref{https://en.wikibooks.org/wiki/LaTeX/Mathematics}{here}, while the \myhref{https://katex.org/docs/supported.html}{KaTeX documentation} can also be a good source.
+    \begin{enumerate}
+        \item Create the following formulas in \LaTeX{}. To verify your solution, use your \verb|main.tex| from \cref{ex:setup}.\footnote{Alternatively you can create a document on the \myhref{https://sharelatex.tum.de}{Overleaf/ShareLaTeX instance of TUM}, on \myhref{https://www.overleaf.com}{Overleaf directly} or type your formulas on the \myhref{https://katex.org}{KaTeX Website} to preview them.}
+        \begin{enumerate}
+            \item \[ x_{1, 2} = \frac{p}{2} \pm \sqrt{\frac{p^2}{4} - q} \]
+            \item \[ x_{1, 2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \]
+            \item \[ \sum_{k=0}^{\infty} \frac{x^k}{k!} = e^x\]
+            \item \[ \sum_{i=0}^{\infty} {(-1)}^i \frac{x^{2i}}{(2i)!} = \sin(x) \]
+            \item \[ f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!}{(x-a)}^n \]
+            \item (*)
+                \begin{equation*}
+                    R \mathbf{v} = \begin{pmatrix}
+                        \cos\theta & -\sin\theta \\
+                        \sin\theta & \cos\theta
+                    \end{pmatrix} \cdot
+                    \begin{pmatrix} x \\ y \end{pmatrix}
+                    = \begin{pmatrix}
+                        x\cos\theta - y\sin\theta \\
+                        x\sin\theta + y\cos\theta
+                    \end{pmatrix}
+                \end{equation*}
+            \item
+                \begin{equation*}
+                    \begin{pmatrix}
+                        1 & 2 & \vrule & 3 \\
+                        4 & 5 & \vrule & 6
+                    \end{pmatrix}
+                \end{equation*}
+                \emph{Note: use} \verb|\vrule|
+        \end{enumerate}
+
+        \item Use Inline-Math (\verb|\(...\)|) to write the following propositions:
+        \begin{enumerate}
+            \item Let \(n \in \mathbb{N}_0\) be arbitrary but fixed. Then \(n! = n \cdot (n-1)!\).
+            \item Let \(x\) be a local minimum of \(f\).\\
+                Then: \(\exists \epsilon > 0: \forall x' \in \mathbb{B}_\epsilon(x): f(x') \ge f(x)\).
+        \end{enumerate}
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item
+        \begin{enumerate}
+            \item \mintinline{latex}{x_{1, 2} = \frac{p}{2} \pm \sqrt{\frac{p^2}{4} - q}}
+            \item \mintinline{latex}{x_{1, 2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}}
+            \item \mintinline{latex}{\sum_{k=0}^{\infty} \frac{x^k}{k!} = e^x}
+            \item \mintinline{latex}{\sum_{i=0}^{\infty} {(-1)}^i \frac{x^{2i}}{(2i)!} = \sin(x)}
+            \item \mintinline{latex}{f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!}{(x-a)}^n}
+            \item \begin{minted}{latex}
+                    R \mathbf{v} = \begin{pmatrix}
+                        \cos\theta & -\sin\theta \\
+                        \sin\theta & \cos\theta
+                    \end{pmatrix}
+                    \cdot \begin{pmatrix} x \\ y \end{pmatrix}
+                    = \begin{pmatrix}
+                        x\cos\theta - y\sin\theta \\
+                        x\sin\theta + y\cos\theta
+                    \end{pmatrix}
+                \end{minted}
+            \item \begin{minted}{latex}
+                    \begin{pmatrix}
+                        1 & 2 & \vrule & 3 \\
+                        4 & 5 & \vrule & 6
+                    \end{pmatrix}
+                \end{minted}
+        \end{enumerate}
+
+        \item
+        \begin{enumerate}
+            \item \begin{minted}{latex}
+                Let \(n \in \mathbb{N}_0\) be arbitrary but fixed.
+                Then \(n! = n \cdot (n-1)!\).
+            \end{minted}
+            \item \begin{minted}{latex}
+                Let \(x\) be a local minimum of \(f\).\\
+                Then: \(\exists \epsilon > 0:
+                \forall x' \in \mathbb{B}_\epsilon(x): f(x') \ge f(x)\).
+            \end{minted}
+        \end{enumerate}
+    \end{enumerate}
+\end{solution}
+
+\section{References and Citation}
+To do citations in \LaTeX{}, we usually use one of two systems:
+\begin{itemize}
+    \item \verb|bibtex|
+    \item \verb|biber|
+\end{itemize}
+Where \verb|biber| is the more modern solution of the two. In both cases however, the \verb|biblatex| package is used.
+
+\begin{exercise}
+    \begin{enumerate}
+        \item \textbf{Create a document with references}\\
+            Proceed as follows:
+            \begin{enumerate}
+                \item Create a file \verb|biblio.bib|.
+                \item Add different sources to this file. Use the \myhref{https://dl.acm.org}{ACM Digital Library}, \myhref{https://scholar.google.com}{Google Scholar}, \myhref{https://dblp.org}{dblp} and \myhref{https://ieeexplore.ieee.org/Xplore/home.jsp}{IEEE Xplore} to export different papers and books directly into the Bibtex format (usually you can also get access to the papers themselves).\\
+                    E.g. try to use the \myhref{https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools}{Dragon Book} as a source.
+                \item Create a \verb|main.tex| file with the following content:
+                    \begin{minted}{latex}
+                        \documentclass{article}
+                        \usepackage[utf8]{inputenc}
+                        \usepackage[english]{babel}
+
+                        \begin{document}
+
+                        \end{document}
+                    \end{minted}
+                \item To do citations in \LaTeX{}, you will need the \verb|biblatex| package:
+                    \begin{minted}{latex}
+                        \usepackage[backend=biber]{biblatex}
+                    \end{minted}
+                    You can remove \verb|backend=biber| to use \verb|bibtex| instead of \verb|biber|.
+                \item To be able to add citations to your chosen sources, you will need to tell \LaTeX{} your \verb|.bib| file (in this case \verb|biblio.bib|, but you can name the file however you want):
+                    \begin{minted}{latex}
+                        \addbibresource{biblio.bib}
+                    \end{minted}
+                \item To get \LaTeX{} to print a list of your sources, you will need to add the \mintinline{latex}{\printbibliography} command wherever you want it to be (typically right before \mintinline{latex}{\end{document}}).
+                \item Now you can add the \mintinline{latex}{\cite{<NAME_OF_SOURCE>}} command in your document.
+            \end{enumerate}
+
+        \item \textbf{Compile your document}\\
+            To compile \LaTeX{} documents with references, it is not enough anymore to just call the compiler (like \verb|pdflatex|). Instead, you need to compile in 4 steps:
+            \begin{enumerate}[1.]
+                \item \verb|pdflatex|
+                \item \verb|biber|
+                \item \verb|pdflatex|
+                \item \verb|pdflatex|
+            \end{enumerate}
+            Since this is quite cumbersome to do after each change of your document, you can instead use \verb|latexmk| which does this for your.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item Example Document
+            \begin{minted}{bibtex}
+                % biblio.bib
+                @book{dragon-book,
+                    author = {Aho, Alfred V. and Lam, Monica S. and Sethi,
+                        Ravi and Ullman, Jeffrey D.},
+                    title = {Compilers: Principles, Techniques, and Tools (2nd Edition)},
+                    year = {2006},
+                    isbn = {0321486811},
+                    publisher = {Addison-Wesley Longman Publishing Co., Inc.},
+                    address = {USA}
+                }
+
+                @book{pierce-types,
+                    author = {Pierce, Benjamin C.},
+                    title = {Types and Programming Languages},
+                    year = {2002},
+                    isbn = {0262162091},
+                    publisher = {The MIT Press},
+                    edition = {1st}
+                }
+
+                @book{kernighan-ritchie,
+                    author = {Kernighan, Brian W. and Ritchie, Dennis M.},
+                    title = {The  C Programming Language},
+                    year = {1988},
+                    isbn = {0131103709},
+                    publisher = {Prentice Hall Professional Technical Reference},
+                    edition = {2nd}
+                }
+            \end{minted}
+            \begin{minted}{latex}
+                % main.tex
+                \documentclass{article}
+                \usepackage[utf8]{inputenc}
+                \usepackage[english]{babel}
+                \usepackage[backend=biber]{biblatex}
+                \addbibresource{biblio.bib}
+
+                \begin{document}
+                    Compiler design is a useful field to study, not just for building compilers, but other disciplines in Computer Science as well~\cite[Chapter~1.5]{dragon-book}.
+
+                    \begin{quote}
+                        Parametric polymorphism [...] allows a single piece of code to be typed ``generically,'' using variables in place of actual types, and then instantiated with particular types as needed.
+                    \end{quote}~\fullcite[Chapter~23.2]{pierce-types}
+
+                    \printbibliography
+                \end{document}
+            \end{minted}
+        \item It's best to compile with \verb|latexmk|. E.g. to compile \verb|main.tex|: \mintinline{sh}{latexmk -pdf main.tex}.
+    \end{enumerate}
+\end{solution}
+
+\section{Markdown}
+
+\begin{exercise}
+    Use the \myhref{https://zulip.in.tum.de}{Zulip} chat of your tutorial to exchange math formulas that you learned in school.
+
+    Here are a few examples:
+    \begin{itemize}
+        \item Perfectly elastic impact: \[ u_1 = \frac{m_1 \cdot v_1 + m_2 \cdot (2v_2 - v_1)}{m_1 + m_2} \]
+        \item Newton's law of gravitation: \[ F_G = G \cdot \frac{m_1 \cdot m_2}{r^2} \]
+        \item Wave equation of a linear standing wave:
+            \[
+                y(t;x) = 2 \cdot A \cdot \cos \left( \frac{2\pi \cdot x}{\lambda} \right)
+                    \cdot \sin \left( \frac{2\pi}{T} \cdot t \right)
+            \]
+        \item Distribution function of the normal distribution:
+            \[
+                F(x) = \frac{1}{\sigma \sqrt{2\pi}} \cdot \int^x_{- \infty}
+                    e^{-\frac{1}{2} \left( \frac{t - \mu}{\sigma} \right)^2} dt
+            \]
+    \end{itemize}
+\end{exercise}
+
+\begin{solution}
+    For tutors: it's probably best if you create a new topic inside your tutorial's stream in which your students can send the formulas.
+
+    On Zulip, there is two different ways to write math:
+    \begin{enumerate}
+        \item For inline math one can use \$\$ at the beginning and \$\$ at the end of the block. E.g. \mintinline{text}{$$a^2 + b^2 = c^2} (in \LaTeX{}, \$\$ would be a \emph{display}\babelhyphen{nobreak}block!)
+        \item For display math one can use a \verb|math| code block. E.g.:
+            \begin{minted}{text}
+                ```math
+                a^2 + b^2 = c^2
+                ```
+            \end{minted}
+    \end{enumerate}
+    If you click on the question mark in the bottom left of a Zulip chat, you can open the formatting help which has the same information.
+
+    The given examples would be solved like so:
+    \begin{itemize}
+        \item \begin{minted}{text}
+                Perfectly elastic impact: $$u_1 = \frac{m_1 \cdot v_1 + m_2 \cdot (2v_2 - v_1)}{m_1 + m_2}$$
+            \end{minted}
+        \item \begin{minted}{text}
+                Newton's law of gravitation: $$F_G = G \cdot \frac{m_1 \cdot m_2}{r^2}$$
+            \end{minted}
+        \item \begin{minted}{text}
+                Wave equation of a linear standing wave:
+                ```math
+                y(t;x) = 2 \cdot A \cdot \cos \left( \frac{2\pi \cdot x}{\lambda} \right)
+                    \cdot \sin \left( \frac{2\pi}{T} \cdot t \right)
+                ```
+            \end{minted}
+        \item \begin{minted}{text}
+                Distribution function of the normal distribution:
+                ```math
+                F(x) = \frac{1}{\sigma \sqrt{2\pi}} \cdot \int^x_{- \infty}
+                    e^{-\frac{1}{2} \left( \frac{t - \mu}{\sigma} \right)^2} dt
+                ```
+            \end{minted}
+    \end{itemize}
+\end{solution}
+
+\end{document}

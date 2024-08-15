@@ -1,0 +1,19 @@
+tex_engine := "pdflatex"
+tex_flags  := "shell-escape interaction=batchmode"
+tex_flags2 := replace_regex(tex_flags, '(^| )(.)', '$1-$2')
+
+all:
+    @for file in `ls *.tex`; do \
+        just build-all $(basename $file .tex); \
+    done
+
+build-all file: (build file "sheet") (build file "solution")
+
+build file target:
+    latexmk -{{tex_engine}} {{tex_flags2}} -jobname="{{file}}-{{target}}" -outdir="out" -auxdir="out/aux" "{{file}}.tex"
+
+watch file target:
+    just --set tex_flags "{{tex_flags}} pvc" build {{file}} {{target}}
+
+clean:
+    rm -rf out

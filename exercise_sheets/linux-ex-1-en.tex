@@ -1,0 +1,331 @@
+\documentclass[english]{sheet}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+
+\newcommand{\myline}[3][TUMBlack]{
+    \path(#2.south) --(#3.north)  coordinate[pos=0.4](mid);
+    \ifthenelse{\equal{#1}{black}}
+    {\draw[-latex, draw=#1] (#2.south) |- (mid) -| (#3.north);}
+    {\draw[-latex, draw=#1, very thick] (#2.south) |- (mid) -| (#3.north);}
+}
+
+\subtitle{Linux Exercise\textemdash Part 1}
+
+\begin{document}
+
+\maketitle
+
+\textit{Exercises marked with a (*) are bonus tasks und should only be done if there is enough time left.}
+
+\section{Setup}
+
+\subsection{Linux}
+
+If you already use a Linux system, or have one available via a \emph{DualBoot} (e.g. with Windows), you have everything to solve the tasks!
+
+\subsection{Windows}
+
+There are many possibilities to additionally use a Linux system when using Windows.
+
+We recommend the use of the \emph{WSL} (\emph{Windows Subsystem for Linux}). The \emph{WSL} allows working in a Linux environment directly on a Windows computer without the typical drawbacks of a \emph{Virtual Machine}.
+
+We would advise against the use of a \emph{Virtual Machine} for this course.
+
+Although the \emph{WSL} is a useful tool, it is often convenient to have access to a Linux system running directly on your computer. A \emph{DualBoot} is a suitable way for Windows users to additionally install a full Linux system besides ther Windows installation. Setting up a DualBoot is a bit more complicated than other methods (\emph{which is why we don't set up a DualBoot during the tutorial!}), but it is something to be aware of. Here are some useful resources to learn about it at home (but you can also find many additional tutorials and guides by simply searching the internet):
+
+\begin{itemize}
+    \item \myurl{https://wiki.ubuntuusers.de/Dualboot}
+    \item \myurl{https://wiki.archlinux.org/title/Dual_boot_with_Windows}
+\end{itemize}
+
+Please follow the \emph{WSL} \myhref{https://learn.microsoft.com/en-us/windows/wsl/install}{installation~guide} provided by Microsoft. If you encounter any problems during the installation process, feel free to ask your tutor for help! Once the \emph{WSL} is installed you will have everything you need to work on the tasks.
+
+\subsection{MacOS}
+Since MacOS, like Linux, is based on UNIX, most of the tasks can be processed directly with MacOS.
+
+Install the package manager \myhref{https://brew.sh}{Homebrew}. If you encounter any problems during the installation, feel free to ask your tutor for help!
+
+\section{Important}
+
+As already discussed in the lecture, the goal is not that you know every command by heart with all possible options. On this sheet we want to practice using the terminal to internalize the most important commands to some extent. You will also learn how you can help yourself by using e.g. the \myhref{https://linux.die.net/man}{Linux~manual} (through the command \mintinline{text}{man}).
+
+\section{The Linux-Filesystem}
+
+\begin{exercise}[subtitle=Filesystem Paths]
+    Assume the following snippet of a filesystem in Linux:
+    \begin{center}
+        \begin{tikzpicture}[every node/.style={shape=rectangle, draw, minimum width=4em, minimum height=2em}]
+            \node(root){/};
+
+            \node(root_home)[below left=1.6em and 30mm of root]{home};
+            \node(root_home_student)[draw=TUMBlue, very thick, below left=1.6em and 0 of root_home]{student};
+            \node(cwd)[draw=none, minimum width=0, minimum height=0, above left=0 and -1.8em of root_home_student]{\footnotesize \bfseries\color{TUMBlue}{CWD}};
+            \node(root_home_student_pictures)[below=1.6em of root_home_student]{Pictures};
+            \node(root_home_prof)[below right=1.6em and 0 of root_home]{prof};
+	        \node(root_home_prof_heilbronn)[below=1.6em of root_home_prof]{Heilbronn};
+            \node(root_home_prof_heilbronn_lectures)[draw=TUMGreen, very thick, below=1.6em of root_home_prof_heilbronn]{Lectures};
+
+            \node(root_var)[below=1.6em of root]{var};
+            \node(root_var_log)[below=1.6em of root_var]{log};
+            \node(root_var_log_journal)[below=1.6em of root_var_log]{journal};
+
+            \node(root_usr)[below right=1.6em and 30mm of root]{usr};
+            \node(root_usr_bin)[below right=1.6em and 0 of root_usr]{bin};
+            \node(root_usr_bin_ls)[below=1.6em of root_usr_bin]{ls};
+            \node(root_usr_share)[below left=1.6em and 0 of root_usr]{share};
+            \node(root_usr_share_x)[draw=TUMExtRed, very thick, below=1.6em of root_usr_share]{X11};
+            \node(root_usr_share_x_xkb)[below=1.6em of root_usr_share_x]{xkb};
+
+            \myline{root}{root_home}
+            \myline{root_home}{root_home_student}
+            \myline{root_home}{root_home_prof}
+            \myline{root_home_student}{root_home_student_pictures}
+            \myline{root_home_prof}{root_home_prof_heilbronn}
+            \myline{root_home_prof_heilbronn}{root_home_prof_heilbronn_lectures}
+
+            \myline{root}{root_var}
+            \myline{root_var}{root_var_log}
+            \myline{root_var_log}{root_var_log_journal}
+
+            \myline{root}{root_usr}
+            \myline{root_usr}{root_usr_share}
+            \myline{root_usr}{root_usr_bin}
+            \myline{root_usr_bin}{root_usr_bin_ls}
+            \myline{root_usr_share}{root_usr_share_x}
+            \myline{root_usr_share_x}{root_usr_share_x_xkb}
+        \end{tikzpicture}
+    \end{center}
+
+    \bigskip
+
+    Give a path to the green and red folders respectively as a(n):
+    \begin{enumerate}
+        \item absolute path
+        \item relative path
+        \item path containing a \mintinline{text}{~} (assume you are logged in as the user ``prof'')
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    Green:
+    \begin{enumerate}
+        \item \mintinline{text}{/home/prof/Pictures}
+        \item \mintinline{text}{../prof/Pictures}
+        \item \mintinline{text}{~/Pictures}
+    \end{enumerate}
+    Red:
+    \begin{enumerate}
+        \item \mintinline{text}{/usr/share/X11}
+        \item \mintinline{text}{../../usr/share/X11}
+        \item \mintinline{text}{~/../../usr/share/X11}
+    \end{enumerate}
+    Mind the case sensitivity!
+\end{solution}
+
+\begin{exercise}[subtitle=Create Folders with \texttt{mkdir}]
+    \begin{enumerate}
+        \item In a folder of your choice, use \mintinline{text}{mkdir} and \mintinline{text}{touch} to create the following structure:
+
+        \begin{center}
+        \begin{tikzpicture}[every node/.style={shape=rectangle, draw, minimum width=5em, minimum height=2em}]
+            \node(root)[draw=none]{};
+            \node(mydir)[below=of root]{mydir};
+            \node(folderA)[draw, rectangle, below left= and 10em of mydir]{folderA};
+            \node(fileA)[below=of folderA]{fileA};
+            \node(folderB)[below=of mydir]{folderB};
+            \node(fileBA)[below left= and 0em of folderB]{fileBA};
+            \node(fileBB)[below right= and 0em of folderB]{fileBB};
+            \node(folderC)[below right= and 10em of mydir]{folderC};
+            \node(folderCA)[below = of folderC]{folderCA};
+            \node(fileCAA)[below=of folderCA]{fileCAA};
+
+            \myline{root}{mydir}
+            \myline{mydir}{folderA}
+            \myline{folderA}{fileA}
+            \myline{mydir}{folderB}
+            \myline{folderB}{fileBA}
+            \myline{folderB}{fileBB}
+            \myline{mydir}{folderC}
+            \myline{folderC}{folderCA}
+            \myline{folderCA}{fileCAA}
+        \end{tikzpicture}
+        \end{center}
+        \item Read through the \mintinline{text}{man} page for \mintinline{text}{mkdir}. How could you create the folder \mintinline{text}{~/uni/precourse/informatics} with \textbf{exactly one} command?
+        \item (*) Use the same command as before but have the created folders printed to the
+        command line. Only use a single \mintinline{text}{-} in your command.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item Easy to verify with the command \mintinline{text}{tree}.
+        \item \mintinline{text}{mkdir -p Documents/uni/vorkurs} (note the addition of \mintinline{text}{-p})
+        \item \mintinline{text}{mkdir -pv Documents/uni/vorkurs}. The use of \mintinline{text}{--parent --verbose} would be equivalent, but only one \mintinline{text}{-} should be used.
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=Navigation]
+    Use \mintinline{text}{cd} with different targets a few times. Try to figure out what the command \mintinline{text}{cd -} does.
+\end{exercise}
+
+\begin{solution}
+    \mintinline{text}{cd -} brings you back to the previous folder.
+\end{solution}
+
+\begin{exercise}[subtitle=Listing Directories and Hidden Files with \texttt{ls}]
+    Read through the \mintinline{text}{man} page for \mintinline{text}{ls}.
+    \begin{enumerate}
+        \item How are files ``hidden'' in linux? How can you list such files?
+        \item Is \mintinline{text}{..} displayed in the root directory? How can you find this out without leaving your current directory?
+        \item List \textbf{all} files in your current directory, except for \mintinline{text}{.} and \mintinline{text}{..}, color the names of directories and sort the files by newest access time.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item ``Hidden'' files start with a dot. You can list them with \mintinline{text}{ls -a}
+        \item \mintinline{text}{ls -a /}
+        \item \mintinline{text}{ls -Altu --color=auto} or \mintinline{text}{ls -A -l -t -u --color=auto} (or any permutation of these flags)
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=(*) Timestamps with \texttt{touch}]
+    Read through the \mintinline{text}{man} page for \mintinline{text}{touch}.
+    \begin{enumerate}
+        \item Create a file \mintinline{text}{very.old} which has the modification date 01.01.1990. Use \mintinline{text}{ls} to check your result.
+        \item Change the modification date of the file to the current time.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{text}{touch -t 199001010000 sehr.alt}
+        \item \mintinline{text}{touch -m sehr.alt}
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=Deletions with \texttt{rm}]
+    Read through the \mintinline{text}{man} page for \mintinline{text}{rm}.
+    \begin{enumerate}
+        \item Is it possible to recover a file which was deleted with \mintinline{text}{rm}?
+        \item (*) On the internet, there exists a joke about using the command \mintinline{text}{rm -rf /} to delete the entire operating system. What protection does \mintinline{text}{rm} offer to prevent the accidental use of such a command?
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item There is no ``Recycle Bin'' from which one could explicitly recover a file. Nevertheless, files are not erased completely from the physical medium. One could recover a file with enough effort.
+        \item One would need to use the \mintinline{text}{--no-preserve-root} flag. (\mintinline{text}{sudo} is required as well)
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=File manipulation with \texttt{cp} and \texttt{mv}]
+    Read through the \mintinline{text}{man} page for \mintinline{text}{cp} and \mintinline{text}{mv}.
+    \begin{enumerate}
+        \item Copy a file named \mintinline{text}{example.txt} from your current directory to a directory named \mintinline{text}{Backup}.
+        \item Move the file \mintinline{text}{example.txt} from your current directory to the \mintinline{text}{documents} directory.
+        \item Rename the file \mintinline{text}{example.txt} in the \mintinline{text}{documents} directory to \mintinline{text}{backup_example.txt}.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{sh}{cp example.txt Backup}
+        \item \mintinline{sh}{mv example.txt documents}
+        \item \mintinline{sh}{mv documents/example.txt documents/backup_example.txt}
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=Viewing and editing files with \texttt{cat}, \texttt{less} and \texttt{nano}]
+    Read through the \mintinline{text}{man} page for \mintinline{text}{cp} and \mintinline{text}{mv}.
+    \begin{enumerate}
+        \item Create a file named \mintinline{text}{notes.txt} and add some text to it using \mintinline{text}{nano}.
+        \item View the contents of \mintinline{text}{notes.txt} using the \mintinline{text}{cat} command.
+        \item View the contents of \mintinline{text}{notes.txt} using the \mintinline{text}{less} command. How can you exit the \mintinline{text}{less} command? Compare the output of \mintinline{text}{cat} and \mintinline{text}{less}. What is different? 
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{sh}{nano notes.txt}
+        \item \mintinline{sh}{cat notes.txt}
+        \item \mintinline{sh}{less notes.txt}. To exit \mintinline{text}{less}, press \mintinline{text}{q}. \mintinline{text}{less} allows you to scroll through the file, while \mintinline{text}{cat} displays the entire file at once.
+    \end{enumerate}
+\end{solution}
+
+
+\begin{exercise}[subtitle=File permissions with \texttt{chmod}]
+    Read through the \mintinline{text}{man} page for \mintinline{text}{chmod}.
+    \begin{enumerate}
+        \item Create a file named \mintinline{text}{secret.txt} and restrict access to it so that only the owner can read and write to it.
+        \item (*) Create a file named \mintinline{text}{public.txt} and give the owner full access, but only read access to others.
+    \end{exercise}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{sh}{touch secret.txt; chmod 600 secret.txt}
+        \item \mintinline{sh}{touch public.txt; chmod 644 public.txt}
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=Searching for files and text with \texttt{find} and \texttt{grep}]
+    \begin{enumerate}
+        \item Use the \mintinline{text}{find} command to search for all \mintinline{text}{.txt} files in your home directory.
+        \item Use the \mintinline{text}{find} command to search for all files in the \mintinline{text}{/home} directory which have been modified in the last 7 days.
+        \item Use the \mintinline{text}{grep} command to search for the word "Linux" in the file \mintinline{text}{notes.txt}.
+        \item (*) Use the \mintinline{text}{grep} command to search for the word "Linux" in all \mintinline{text}{.txt} files in the current directory and its subdirectories.
+    \end{enumerate}
+\end{exercise}
+
+\section{Control Operators}
+
+In the lecture you have already learned about the control operators \mintinline{text}{||}, \mintinline{text}{&&}, \mintinline{text}{;}, \mintinline{text}{&}, \mintinline{text}{>}, \mintinline{text}{>>} and \mintinline{text}{|} (also called ``Pipe''). In the following tasks, you will practice using these operators.
+
+\begin{exercise}[subtitle=Pipes and Output Redirection]
+    % study1.txt and study2.txt are in the /exercises/resources/ folder
+    On \myhref{https://www.moodle.tum.de}{Moodle}, in addition to these exercise sheets, you will also find the following two text files: \mintinline{text}{study1.txt} and \mintinline{text}{study2.txt} (both files contain a subset of the study courses offered by TUM). For this task, the commands \mintinline{text}{sort} and \mintinline{text}{uniq} are helpful (skim the associated \mintinline{text}{man} pages if needed).
+    \begin{enumerate}
+        \item Print the contents of both files using the command \mintinline{text}{cat}.
+        \item Can the previous invocation of \mintinline{text}{cat} be optimized to output a large number of files without having to explicitly specify every file? Find out about ``globbing'' on the Internet in this regard.
+        \item Specify two commands which can be used to output the contents of  \mintinline{text}{study1.txt} and \mintinline{text}{study2.txt} sorted respectively.
+        \item Now, in the sorted output of both files, additionally eliminate all duplicates without changing the files.
+        \item Output in one command the contents of both files sorted and free of duplicates. How could you save this output in a new file named \mintinline{text}{study-all.txt}?
+        \item Add the study program ``Medizin'' to the file \mintinline{text}{study-all.txt} (without deleting the existing content). Then sort the file again.
+        \item (*) Now print the first and last 4 lines of \mintinline{text}{study-all.txt} (The commands \mintinline{text}{head} and \mintinline{text}{tail} may be helpful).
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{text}{cat study1.txt study2.txt}
+        \item \mintinline{text}{cat *.txt}, \mintinline{text}{*.txt} refers to all files ending in \mintinline{text}{.txt} in the current \emph{CWD}
+        \item \mintinline{text}{sort study1.txt} resp. \mintinline{text}{sort study2.txt}
+        \item \mintinline{text}{sort study1.txt | uniq} resp. \mintinline{text}{sort study2.txt | uniq}
+        % explicit line break is a quick and dirty formatting fix
+        \item \mintinline{text}{cat study1.txt study2.txt | sort | uniq} and \\\mintinline{text}{cat study1.txt study2.txt | sort | uniq > study-all.txt} to save the output to a file.
+        \item \mintinline{text}{echo "Medizin" >> study-all.txt}, then \mintinline{text}{sort study-all.txt -o study-all.txt} (\textbf{Important:} \mintinline{text}{sort study-all.txt > study-all.txt} will not work because the file will be \emph{truncated} first!)
+        \item \mintinline{text}{cat study-all.txt | head -4} and \mintinline{text}{cat study-all.txt | tail -4}
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[subtitle=Chaining Commands]
+    In this task commands are (logically) chained (you can parenthesize commands using \mintinline{text}{()}). Write a chain of commands that:
+    \begin{enumerate}
+        \item change to the folder \mintinline{text}{test}. Print \mintinline{text}{== Error ==} if the directory change failed.
+        \item change to the folder \mintinline{text}{test}, listing the contents (including hidden files) on a successful directory change.
+        \item runs in the background and prints \mintinline{text}{TUM} 3 times while waiting for 5 seconds between each output (you will need the command \mintinline{text}{sleep}).
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}
+        \item \mintinline{text}{cd test || echo "== Error =="}
+        \item \mintinline{text}{cd test && ls -a}
+        \item \mintinline{text}{( echo "TUM"; sleep 5; echo "TUM"; sleep 5; echo "TUM" ) &}
+    \end{enumerate}
+\end{solution}
+
+\end{document}
