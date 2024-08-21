@@ -21,7 +21,7 @@
 \RequirePackage{tcolorbox}
 \RequirePackage[outputdir=out/aux]{minted}
 \usemintedstyle{lovelace}
-\setminted{fontsize=\footnotesize}
+\setminted{fontsize=\small,autogobble=true}
 
 \tcbuselibrary{minted}
 
@@ -54,7 +54,7 @@
 }
 
 \author{Hartwig Anzt\\
-Based on material from Adrian Stein, Thomas Lindae}
+ -- based on material from Adrian Stein, Thomas Lindae}
 
 \TUMbeamersetup {
     title page   = TUM tower,      % style of the title page
