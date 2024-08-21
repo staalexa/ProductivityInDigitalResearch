@@ -19,6 +19,10 @@
 
 \documentclass{setbeamer}
 
+\usepackage{scrextend}
+\changefontsizes{8pt}
+
+
 \usepackage{tikz}
 \usepackage{marvosym}
 \usetikzlibrary{positioning,graphs,trees,matrix}
@@ -47,11 +51,11 @@
 }
 
 % presentation metadata
-\title{Version Control}
-\subtitle{Git}
+\title{Version Control Systems - git}
+\subtitle{Concept and Usage}
 
 \institute{\theChairName\\\theDepartmentName\\\theUniversityName}
-\date[05.10.2023]{5. Oktober 2023}
+\date[\today]{\today}
 
 \footline{\insertauthor~|~\insertshorttitle~|~\insertshortdate}
 
@@ -59,11 +63,11 @@
 
 \maketitle
 
-\begin{frame}{Version Control System}{3 Primärziele}
+\begin{frame}{Version Control Systems}{Motivation}
     \begin{enumerate}
-        \item Zugreifen auf frühere Versionen des Quellcodes
-        \item Gleichzeitiges Arbeiten an verschiedenen features
-        \item Synchronisation mehrer Entwickler
+        \item Access to earlier versions of the code
+        \item Modification of different features, trying variants
+        \item Synchronization of several developers
     \end{enumerate}
 \end{frame}
 
@@ -72,10 +76,10 @@
 % \begin{frame}{Git Historie}
 % \end{frame}
 
-\section{Zugreifen auf frühere Versionen des Quellcodes}
+\section{Access to earlier versions of the code}
 
-\begin{frame}<handout:8,10>[fragile]{Naiver Ansatz}
-    Wiederholtes speichern des Projekts bei jeder Änderung.
+\begin{frame}<handout:8,10>[fragile]{Naive Approach}
+    Save a copy after every change.
 
     \begin{Center}
         \begin{onlyenv}<all:1-8>
@@ -112,11 +116,12 @@
         \end{onlyenv}
     \end{Center}
 
-    \onslide<all:10->{Problem: hohe Redundanz und daher großer Speicheraufwand}
+    \onslide<all:10->{Problem: extremely confusing and resource intensive.}
 \end{frame}
 
 \begin{frame}[fragile]{Git Commits}
-    Idee: Statt immer das ganze Projekt zu speichern, speichert man nur die Änderungen.
+    Concept: Instead of storing all code over and over again, only keep track of the changes. 
+   
 
     \vspace{3mm}
     \begin{onlyenv}<2->
@@ -172,22 +177,22 @@
 \begin{frame}[c]{Commit Interpretation}{Diff vs. Snapshot}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
-            \textbf{Commit als Diff}\\Technische Interpretation
+            \textbf{Commit as Diff}\\Technical Interpretation
 
             \vspace{3mm}
-            Ein Commit speichert nur die Änderungen zum Parent Commit.
+            Every commit only stores the changes to the parent commit.
         \end{column}
 
         \begin{column}{0.5\textwidth}
-            \textbf{Commit als Snapshot}\\Praktische Interpretation
+            \textbf{Commit as Snapshot}\\Technical Interpretation
 
             \vspace{3mm}
-            Ein Commit ist ein Snapshot des Projekts.
+            Every commit is an independent snapshot of the project. Like a photo book.
         \end{column}
     \end{columns}
 \end{frame}
 
-\begin{frame}<handout:1-3>[fragile,c]{HEAD und Working Tree}
+\begin{frame}<handout:1-3>[fragile,c]{HEAD and Working Tree}
     \begin{columns}
         \begin{column}{0.5\textwidth}
             \textbf{Working Tree:}
@@ -293,7 +298,7 @@
 
     \onslide<3->
     \vspace{3mm}
-    Der \verb|.git| Ordner speichert alle Informationen die Git braucht, unter anderem:
+    Der \verb|.git| Folder stores all git information, including:
     \begin{itemize}
         \item Commmits
         \item HEAD
@@ -302,15 +307,15 @@
     \end{itemize}
 
     \vspace{3mm}
-    Der Ordner wird von Git verwendet, man sollte ihn also nicht bearbeiten.
+    Generally, you should not modify the content of this folder (may break the local repo).
 \end{frame}
 
-\begin{frame}<handout:2,4,5,8>[fragile]{Erstellen von Commits}{Staging}
-    Beim erstellen eines Commits gibt es 3 Stufen:
+\begin{frame}<handout:2,4,5,8>[fragile]{Commits}{Staging}
+    Every Commit has three stages:
     \begin{itemize}
-        \item Änderungen werden im Working Tree gemacht
-        \item Änderungen werden ``gestaged'': \TUMCodeInline{text}{git add <FILES>}
-        \item Änderungen werden commited: \TUMCodeInline{text}{git commit -m "<MESSAGE>"}
+        \item Changes are done in the Working Tree
+        \item Changes are ``staged'': \TUMCodeInline{text}{git add <FILES>}
+        \item Changes are committed: \TUMCodeInline{text}{git commit -m "<MESSAGE>"}
     \end{itemize}
 
     \begin{columns}
@@ -334,7 +339,7 @@
         \begin{column}{0.25\textwidth}
             \begin{Center}
                 \begin{mydirtree}
-                    \node (root) {myproject}
+                    \node (root) {myproject} 
                         child { node {main.c} }
                         child [visible on=<all:2->] {
                             node {\only<all:2,3,6->{\textcolor{ForestGreen}{foo.c}}\only<all:4>{\textcolor{orange}{foo.c}}\only<all:5>{foo.c}}
@@ -369,7 +374,7 @@
 
 \end{frame}
 
-\section{Gleichzeitiges Arbeiten an verschiedenen features}
+\section{Concurrent changes on different code features}
 
 \begin{frame}<handout:8,10,11,12,13,14>[fragile,c]{Git Branch}
     \begin{columns}[c]
@@ -452,31 +457,27 @@
 \end{frame}
 
 \begin{frame}[c]{Detached HEAD}
-    Der \textbf{HEAD} Pointer ist \emph{detached} wenn er nicht an einem Branch hängt.
+    Der \textbf{HEAD} Pointer is \emph{detached} if it is no longer associated to a branch.
 
     \begin{TUMBoxFill}[orange]{}{}
-        Commits die mit einem \textbf{detached HEAD} erstellt werden, gehen potenziell verloren!
+        Commits on a \textbf{detached HEAD} are generally lost!
     \end{TUMBoxFill}
 \end{frame}
 
 \begin{frame}[c]{Branch Interpretation}{Pointer vs. Subtree}
     \begin{columns}[T]
         \begin{column}{0.5\textwidth}
-            \textbf{Branch als Pointer}\\Technische Interpretation
+            \textbf{Branch as a Pointer}\\Technical Interpretation
 
             \vspace{3mm}
-            Ein Branch zeigt auf einen einzige Commit.
+            A branch points to a single commit.
         \end{column}
 
         \begin{column}{0.5\textwidth}
-            \textbf{Branch als Subtree}\\Praktische Interpretation
+            \textbf{Branch as Subtree}\\Technical Interpretation
 
             \vspace{3mm}
-            Ein Branch ist der komplette Teilbaum aller Vorgänger eines Commits.
-
-            \begin{footnotesize}
-                (Alternativ: Alle Vorgänger bis zur ersten Abzweigung.)
-            \end{footnotesize}
+            A branch is a complete subtree containing all preceeding commits.
         \end{column}
     \end{columns}
 \end{frame}
@@ -562,7 +563,7 @@
     \end{columns}
 \end{frame}
 
-\section{Synchronisation mehrer Entwickler}
+\section{Synchronization between developers}
 
 \begin{frame}<handout:1,3>[fragile,c]{Git Remotes}
     \begin{columns}[c]
@@ -709,7 +710,7 @@
 \end{frame}
 
 \begin{frame}[fragile,c]{Git Pull}
-    Die Kombination aus \TUMCodeInline{sh}{git fetch} und \TUMCodeInline{sh}{git merge origin/master} ist so häufig, dass es einen eigenen Command dafür gibt: \TUMCodeInline{sh}{git pull}.
+   The combination of \TUMCodeInline{sh}{git fetch} and \TUMCodeInline{sh}{git merge origin/master} is very frequent, so there exists a combined command: \TUMCodeInline{sh}{git pull}.
 
     \tikzset{commit/.style = {draw, circle, minimum size = 6mm}}
 
@@ -964,8 +965,8 @@
     \end{TUMCodeBlock}
 \end{frame}
 
-\begin{frame}{Empfehlungen zur Verwendung von Git}
-    Wenn man mit anderen Entwicklern arbeitet, ist die typische Reihenfolge für Änderungen:
+\begin{frame}{Recommended Git usage}
+    In collaborative software development, the following sequence of commands is common:
 
     \begin{Center}
         \TUMCodeInline{sh}{git add} {\Large\MVRightarrow{}} \TUMCodeInline{sh}{git commit} {\Large\MVRightarrow{}} \TUMCodeInline{sh}{git pull} {\Large\MVRightarrow{}} \TUMCodeInline{sh}{git push}
@@ -973,73 +974,74 @@
 
     \vspace{3mm}
 
-    Für komplexe Projekte sollte man sich früh für eine Branch-Ideologie entscheiden, z.~B.~\myhref{https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow}{Git~Flow}.
+    For complex projects, one should early on decide on a branch strategy, e.g.~\myhref{https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow}{Git~Flow}.
 \end{frame}
 
-\begin{frame}{GitHub und GitLab}
-    Für Remote Server kann man entweder einen eigenen Server hosten (mithilfe von z.~B.~\myhref{https://about.gitea.com}{Gitea}), oder einen existierenden Service verwenden, wie \myhref{https://github.com}{GitHub} oder \myhref{https://gitlab.com}{GitLab}.
+\begin{frame}{Resolving Conflicts}
+
+    \begin{Center}
+        \TUMCodeInline{sh}{git add} {\Large\MVRightarrow{}} \TUMCodeInline{sh}{git commit} {\Large\MVRightarrow{}} \TUMCodeInline{sh}{git pull} {\Large\MVRightarrow{}} \TUMCodeInline{sh}{git push}
+    \end{Center}
+    
+	Can result in conflicts if both remote and local changes clash. These can be resolved using the following steps:
+
+	\begin{enumerate}
+	\item Identify the files with the merge conflict: \TUMCodeInline{sh}{git status}
+	\item Open the file with an IDE and search for the conflicting area:
+	\begin{itemize}
+	\item The code between \TUMCodeInline{sh}{<<<<<<< HEAD} and \TUMCodeInline{sh}{=======} shows the remote changes.
+	\item The code between \TUMCodeInline{sh}{=======} and \TUMCodeInline{sh}{>>>>>>> branch-foo} shows the local changes on branch ``foo''.
+	\end{itemize}    
+	\item Resolve the conflict by consolidating to the code you want and removing all chevrons.
+	\item Add or stage your changes: \TUMCodeInline{sh}{git add .}
+	\item Commit your changes with a comment: \TUMCodeInline{sh}{git commit -m 'resolve conflicts'}
+	\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{GitHub and GitLab}
+    A remote git repository can either be hosted by an own server (e.g. using~\myhref{https://about.gitea.com}{Gitea}), or use a git hosting site like \myhref{https://github.com}{GitHub} or \myhref{https://gitlab.com}{GitLab}.
 
     \vspace{3mm}
 
     GitHub:
     \begin{itemize}
-        \item 2018 von Microsoft aufgekauft worden
-        \item Der bei weitem verbreiteste Service in der Open Source Welt
+        \item 2018 acquired by Microsoft
+        \item The most popular git hosting site
     \end{itemize}
 
     \vspace{3mm}
 
     GitLab:
     \begin{itemize}
-        \item Eigenständig und größtenteils Open Source (oder zumindest source-available)
-        \item Self-Hosting möglich (z.~B. auch die \myhref{https://gitlab.lrz.de}{LRZ GitLab Instanz})
+        \item Partly open source
+        \item Allows for self-hosting (e.g. \myhref{https://gitlab.lrz.de}{LRZ GitLab instance})
     \end{itemize}
 
     \vspace{3mm}
 
     \begin{TUMBoxFill}[orange]{}{}
-        GitHub und GitLab sind \textbf{Services} auf denen man Git Repositories hosten kann, Git selber hat aber nichts mir diesen Services zu tun und kann auch komplett lokal verwendet werden!
+        GitHub und GitLab are \textbf{Services} for hosting git repositories.\\ Git itself is a technical solution independent of these hosting sites!
     \end{TUMBoxFill}
 \end{frame}
 
-\begin{frame}{Git vegisst nichts}
-    Die Git History ist an sich \emph{unveränderlich}. Es ist zwar möglich die History zu ändern, aber recht umständlich und eigentlich nicht angedacht. Um Änderungen rückgängig zu machen, würde man einen neuen Commit erstellen, der die Änderungen rückgängig macht.
-
-    \vspace{3mm}
-
-    Spätestens wenn Sie einen Commit pushen, können Sie diesen nicht mehr leicht löschen.
-
-    \pause
-    \vspace{3mm}
+\begin{frame}{Git never forgets}
+    Changing the git history is extremely complicated.
 
     \begin{TUMBoxFill}[orange]{}{}
-        Committen Sie keine Secrets wie Passwörter!
+        \textbf{Never add passwords to a git repository!}
     \end{TUMBoxFill}
 
     \pause
     \vspace{3mm}
 
     \begin{TUMBoxFill}[orange]{}{}
-        Wenn Sie große Dateien committen, sind diese Dateien immer noch in voller Größe vorhanden, auch wenn Sie in einem anderen Commit die Datei wieder löschen!
+        If you add large files to a repository, these will stay in the git even if you delete them in a later commit as they remain part of the history.
     \end{TUMBoxFill}
 
     % TODO git is for text
     % TODO git is not a backup
-\end{frame}
-
-% TODO add a demo
-
-\begin{frame}{Git Alternativen}
-    \begin{TUMBoxInverse}{}{Mercurial}
-        In Verwendung von z. B. Facebook, Mozilla, und das VCS vom TUM-Entwickelten Proof Assistant \myhref{https://isabelle.in.tum.de/}{Isabelle}.
-    \end{TUMBoxInverse}
-
-    \begin{TUMBoxInverse}{}{Apache Subversion | SVN}
-    \end{TUMBoxInverse}
-
-    \begin{TUMBoxInverse}{}{Google Piper}
-        Google's internes VCS zum verwalten eines 2\texttt{+} Milliarden Zeilen Code Monorepository.
-    \end{TUMBoxInverse}
 \end{frame}
 
 \end{document}
