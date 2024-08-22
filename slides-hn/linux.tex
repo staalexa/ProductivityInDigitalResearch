@@ -370,7 +370,7 @@ The \textbf{path} is the global address of a file.\\
     \begin{itemize}
         \item \TUMCodeInline{text}{rm test.txt}
         \item \TUMCodeInline{text}{rm -d empty-folder}
-        \item \TUMCodeInline{text}{rm -r nonempty-folder}\textemdash Ordner with content have to be deleted recursively
+        \item \TUMCodeInline{text}{rm -r nonempty-folder}\textemdash Folder with content have to be deleted recursively
         \item \TUMCodeInline{text}{rm -f test.txt}\textemdash Forces the deletion
     \end{itemize}
 \end{frame}
@@ -473,6 +473,21 @@ The \textbf{path} is the global address of a file.\\
     \end{itemize}
 \end{frame} 
 
+
+
+\begin{frame}{Useful Tricks}
+   
+    \begin{itemize}
+        \item Recall previous command: upward arrow
+        \item Complete path: tab
+        \item Delete current input: Ctrl + u
+        \item Cancel current input: Ctrl + c
+        \item Copy terminal input: Ctrl + Shift + c
+        \item Copy terminal input: Ctrl + Shift + v
+        \item Remove recent command + output: Ctrl + l
+    \end{itemize}
+    
+\end{frame} 
 
 
 
@@ -594,7 +609,7 @@ For more information on changing permissions, run \TUMCodeInline{text}{man chmod
 % https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile
 % Federal Office for Information Security (as of Jan 2023)
 \begin{frame}{SSH Keys}
-    Instead of verification with a password, we can also use a set of ssh keys. \myhref{https://wiki.ito.cit.tum.de/bin/view/Informatik/Helpdesk/Ssh/\#H1.3.SSHKey}{Generierung}:
+    Instead of verification with a password, we can also use a set of ssh keys. \myhref{https://wiki.ito.cit.tum.de/bin/view/Informatik/Helpdesk/Ssh/\#H1.3.SSHKey}{Generation}:
     \begin{itemize}
         % Increased bit depth for RSA Key for compliance with current standards
         \item \TUMCodeInline{sh}{ssh-keygen -t rsa -b 4096} for an \emph{RSA} (Rivest-Shamir-Adleman) key pair
@@ -673,7 +688,7 @@ For more information on changing permissions, run \TUMCodeInline{text}{man chmod
     \textbf{nano}:
     \begin{itemize}
         \item Easy to use
-        \item In the manual of nano, \TUMCodeInline{text}{^} refers to \emph{Strg}
+        \item In the manual of nano, \TUMCodeInline{text}{^} refers to \emph{Ctrl}
         \item nano is quit with \TUMCodeInline{text}{^X} (\emph{Strg+X}\,) 
     \end{itemize}
 \end{frame}
