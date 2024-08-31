@@ -19,11 +19,14 @@
 
 \documentclass{setbeamer}
 
+\usepackage{scrextend}
+\changefontsizes{8pt}
+
 \usepackage{pdfpages}
 
 % presentation metadata
 \title{Markup Languages}
-\subtitle{\LaTeX{} und Markdown}
+\subtitle{\LaTeX{} and Markdown}
 
 \institute{\theChairName\\\theDepartmentName\\\theUniversityName}
 \date[05.10.2023]{5. Oktober 2023}
@@ -34,14 +37,15 @@
 
 \maketitle
 
-\includepdf[pages=-]{resources/WYSIWYG_example.pdf}
+\includepdf[pages=-]{resources/WYSIWYG_example_en.pdf}
 
 \section{WYSIWYG vs. WYSIWYM}
 \begin{frame}{WYSIWYG}{What You See Is What You Get}
-    Graphische Editors, die einem das Anzeigen, was am Ende raus kommt.
+    Grapical editors that show you what the end result will look like.
 
-    \pause
-    Beispiele:
+    \vspace{3mm}
+
+    Examples:
     \begin{columns}
         \begin{column}{0.25\textwidth}
             \begin{itemize}
@@ -50,21 +54,21 @@
             \end{itemize}
         \end{column}
 
-        \begin{column}{0.25\textwidth}
+        \begin{column}{0.20\textwidth}
             \begin{itemize}
                 \item Google Sheets
                 \item Google Slides
             \end{itemize}
         \end{column}
 
-        \begin{column}{0.25\textwidth}
+        \begin{column}{0.20\textwidth}
             \begin{itemize}
                 \item Apple Pages
                 \item Apple Keynote
             \end{itemize}
         \end{column}
 
-        \begin{column}{0.25\textwidth}
+        \begin{column}{0.20\textwidth}
             \begin{itemize}
                 \item LibreOffice Writer
                 \item LibreOffice Impress
@@ -72,37 +76,36 @@
         \end{column}
     \end{columns}
 
-    \pause
-    \vspace{3mm}
+    \vspace{5mm}
     \begin{columns}
-        \begin{column}{0.5\textwidth}
-            Vorteile:
+        \begin{column}{0.45\textwidth}
+            Advantages:
             \begin{itemize}
-                \item leichte Bedienung
-                \item direktes Feedback beim editieren
+                \item easy to use
+                \item immediate visual feedback
             \end{itemize}
         \end{column}
 
-        \pause
         \begin{column}{0.5\textwidth}
-            Nachteile:
+            Disadvantages:
             \begin{itemize}
-                \item oft ungenau
-                \item Fehler kann man nur visuell erkennen
+                \item often not precise
+                \item errors can only be detected visually
             \end{itemize}
         \end{column}
     \end{columns}
 \end{frame}
 
 \begin{frame}{WYSIWYM}{What You See Is What You Mean}
-    Spezifikation, wie das Endergebnis aussehen soll.
-    \pause
+    Specification of the structure of a document, not the visual representation.
+
+    \vspace{3mm}
+    Examples:
     \begin{columns}
-        \begin{column}{0.5\textwidth}
-            Beispiele:
+        \begin{column}{0.45\textwidth}
             \begin{itemize}
-                \item \TeX{} bzw. \LaTeX{}
-                \item troff bzw. groff
+                \item \TeX{}, \LaTeX{}
+                \item troff, groff
             \end{itemize}
         \end{column}
 
@@ -116,33 +119,30 @@
         \end{column}
     \end{columns}
 
-    \pause
-    \vspace{3mm}
+    \vspace{5mm}
     \begin{columns}
-        \begin{column}{0.5\textwidth}
-            Vorteile:
+        \begin{column}{0.45\textwidth}
+            Advantages:
             \begin{itemize}
-                \item meistens Text-basiert (leichtes version control mit z. B. git)
-                \item ``Korrektheit'' kann sichergestellt werden
+                \item mostly text-based (easy version control with e. g. git)
+                \item "correctness" can be ensured
             \end{itemize}
         \end{column}
 
-        \pause
         \begin{column}{0.5\textwidth}
-            Nachteile:
+            Disadvantages:
             \begin{itemize}
-                \item hohe Learning Curve
-                \item kein (oder nur langsames) visuelles Feedback
+                \item high learning curve
+                \item no (or only slow) visual feedback
             \end{itemize}
         \end{column}
     \end{columns}
 \end{frame}
 
 \section{\LaTeX{}}
-\begin{frame}{\LaTeX{} Begriffe}
-    \pause
+\begin{frame}{\LaTeX{} Terms}
     \begin{columns}
-        \begin{column}{0.5\textwidth}
+        \begin{column}{0.45\textwidth}
             Syntax:
             \begin{itemize}
                 \item \TeX{}
@@ -150,9 +150,8 @@
             \end{itemize}
         \end{column}
 
-        \pause
         \begin{column}{0.5\textwidth}
-            Compiler:
+            Compilers:
             \begin{itemize}
                 \item \TUMCodeInline{sh}{latex}
                 \item \TUMCodeInline{sh}{pdflatex}
@@ -161,17 +160,16 @@
             \end{itemize}
             % see https://texblog.org/2012/08/29/changing-the-font-size-in-latex/#comment-5495
             % why \par is needed
-            {\scriptsize Siehe \myurl{https://www.overleaf.com/learn/latex/Choosing_a_LaTeX_Compiler} für Details.\par}
+            {\scriptsize See \myurl{https://www.overleaf.com/learn/latex/Choosing_a_LaTeX_Compiler} for further details.\par}
         \end{column}
     \end{columns}
 
     % TODO add compiler toolchain graphic
 
-    \pause
     \vspace{3mm}
     \begin{columns}
-        \begin{column}{0.5\textwidth}
-            Distributionen:
+        \begin{column}{0.45\textwidth}
+            Distributions:
             \begin{itemize}
                 \item \myhref{https://tug.org/texlive}{Texlive}
                 \item \myhref{https://tug.org/mactex}{MacTeX}
@@ -179,38 +177,37 @@
             \end{itemize}
         \end{column}
 
-        \pause
         \begin{column}{0.5\textwidth}
-            Web-Technologien:
+            Web-Technologies:
             \begin{itemize}
                 \item \myhref{https://katex.org}{KaTeX}
                 \item \myhref{https://www.mathjax.org}{MathJax}
                 \item \myhref{https://www.overleaf.com}{Overleaf}/\myhref{https://www.sharelatex.com}{ShareLaTeX}\\
-                    {\scriptsize (sogar von der TUM direkt: \myurl{https://sharelatex.tum.de})\par}
+                    {\scriptsize (also hosted by TUM: \myurl{https://sharelatex.tum.de})\par}
             \end{itemize}
         \end{column}
     \end{columns}
 \end{frame}
 
-\begin{frame}[fragile,c]{\LaTeX{} Grundlagen}{}
-    \begin{TUMListing}[listing only]{Minimales Dokument}
+\begin{frame}[fragile,c]{\LaTeX{} Basics}{}
+    \begin{TUMListing}[listing only]{Minimal working example}
         \documentclass{article}
         \usepackage[utf8]{inputenc}
 
-        \title{Titel des Dokuments}
-        \author{Name des Authors}
-        \date{Datum der Erstellung}
+        \title{Title of the document}
+        \author{Author's Name}
+        \date{Creation Date}
 
         \begin{document}
         \maketitle
         \section{Introduction}
-        % Kommentare, die beim kompilieren ignoriert werden
+        % Comments are ignored by the compiler
         Lorem ipsum dolor sit amet.
         \end{document}
     \end{TUMListing}
 \end{frame}
 
-\begin{frame}[fragile,t]{\LaTeX{} Grundlagen}
+\begin{frame}[fragile,t]{\LaTeX{} Basics}
     \begin{TUMListing}[listing side text]{Text Formatting}
         Stand in \textbf{hallway}\\
         for forgetting \underline{homework}\\
@@ -218,7 +215,7 @@
     \end{TUMListing}
 
     \begin{uncoverenv}<2->
-        \begin{TUMListing}[listing side text]{Listen}
+        \begin{TUMListing}[listing side text]{Lists}
             \begin{itemize}
                 \item Foo
                 \item Bar
@@ -228,15 +225,15 @@
 
     \marklessfootnote{\myurl{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}}
 \end{frame}
-
+%TODO translate
 \section{\LaTeX{} Math}
 \begin{frame}[fragile,c]{\LaTeX{} Math}{Inline}
     \begin{TUMListing}{\TeX}
-        Der Satz des Pythagoras: $a^2 + b^2 = c^2$
+        Pythagorian Theorem: $a^2 + b^2 = c^2$
     \end{TUMListing}
 
     \begin{TUMListing}{\LaTeX{}}
-        Der Satz des Pythagoras: \(a^2 + b^2 = c^2\)
+        Pythagorian Theorem: \(a^2 + b^2 = c^2\)
     \end{TUMListing}
 \end{frame}
 
@@ -244,7 +241,7 @@
     \begin{columns}[c]
         \begin{column}{0.49\textwidth}
             \begin{TUMListing}{\TeX}
-                Der Satz des Pythagoras:
+                Pythagorean theorem:
                 $$
                     a^2 + b^2 = c^2
                 $$
@@ -253,7 +250,7 @@
 
         \begin{column}{0.49\textwidth}
             \begin{TUMListing}{\LaTeX{}}
-                Der Satz des Pythagoras:
+                Pythagorean theorem:
                 \[
                     a^2 + b^2 = c^2
                 \]
@@ -264,9 +261,9 @@
 
 \begin{frame}<handout:9>[fragile,c]{\LaTeX{} Math}
     \begin{onlyenv}<all:1>
-        \begin{TUMBox}{}{Hauptsatz der Differential- und Integralrechnung}
-            Sei \(x \in (a,b)\) und \(h \in \mathbb{R}\setminus \{0\}\)
-            mit \(x + h \in [a,b]\). Es gilt:
+        \begin{TUMBox}{}{Main theorem of differential and integral calculus} %TODO check if translation is correct
+            Let \(x \in (a,b)\) and \(h \in \mathbb{R}\setminus \{0\}\)
+            with \(x + h \in [a,b]\). It holds:
             \begin{align*}
               \frac{F(x + h) - F(x)}{h} &= \frac{1}{h} \left( \int^{x + h}_a f(t)dt
                   - \int^x_a f(t)dt \right) = \frac{1}{h} \int^{x + h}_x f(t)dt\\
@@ -276,11 +273,11 @@
     \end{onlyenv}
 
     \begin{onlyenv}<all:2->
-        \begin{TUMBox}{}{Hauptsatz der Differential- und Integralrechnung}
+        \begin{TUMBox}{}{Main theorem of differential and integral calculus}
             % pure magic
             \begin{minted}[escapeinside=||,beameroverlays=true,fontsize=\footnotesize]{latex}
-                Sei \(x \in (a,b)\) |\onslide<all:3->|und \(h \in \mathbb{R}\setminus \{0\}\)
-                |\onslide<all:4->|mit \(x + h \in [a,b]\). Es gilt:
+                Let \(x \in (a,b)\) |\onslide<all:3->|and \(h \in \mathbb{R}\setminus \{0\}\)
+                |\onslide<all:4->|with \(x + h \in [a,b]\). It holds:
                 |\onslide<all:5->|\begin{align*}
                   |\onslide<all:6->|\frac{F(x + h) - F(x)}{h} |\onslide<all:7->|&= \frac{1}{h} \left( \int^{x + h}_a f(t)dt
                       - \int^x_a f(t)dt \right) |\onslide<all:8->|= \frac{1}{h} \int^{x + h}_x f(t)dt\\
@@ -291,8 +288,8 @@
             \onslide<all:1->
 
             \tcblower
-            Sei \(x \in (a,b)\) \uncover<all:3->{und \(h \in \mathbb{R}\setminus \{0\}\)}
-            \uncover<all:4->{mit \(x + h \in [a,b]\). Es gilt:}
+            Let \(x \in (a,b)\) \uncover<all:3->{and \(h \in \mathbb{R}\setminus \{0\}\)}
+            \uncover<all:4->{with \(x + h \in [a,b]\). It holds:}
             \begin{align*}
                 \uncover<all:6->{\frac{F(x + h) - F(x)}{h}}
                 \uncover<all:7->{&= \frac{1}{h} \left( \int^{x + h}_a f(t)dt - \int^x_a f(t)dt \right)}
@@ -321,11 +318,11 @@
         \end{Center}
     \end{TUMBox}
 
-    \marklessfootnote{Siehe auch \myurl{https://en.wikibooks.org/wiki/LaTeX/Mathematics} und~\myurl{https://katex.org/docs/supported}.}
+    \marklessfootnote{Refer to \myurl{https://en.wikibooks.org/wiki/LaTeX/Mathematics} and~\myurl{https://katex.org/docs/supported} for further information.}
 \end{frame}
 
 \section{Markdown}
-\begin{frame}[fragile]{Markdown Übersicht}
+\begin{frame}[fragile]{Markdown Overview}
     \begin{columns}
         \begin{column}{0.25\textwidth}
             \begin{TUMCodeBlock}{Heading}{markdown}
@@ -373,16 +370,15 @@
     \marklessfootnote{\myurl{https://daringfireball.net/projects/markdown/syntax}}
 \end{frame}
 
+% TODO check why the code blocks are not displayed correctly
 \begin{frame}[fragile,c]{Markdown}
-    \begin{TUMCodeBlock}{Code Blöcke}{markdown}
+    \begin{TUMCodeBlock}{Code Blocks}{markdown}
         ```
-        Dieser Block wird mit einem monospace-font angezeigt
+        This block is displayed with a monospace font
         ```
     \end{TUMCodeBlock}
 
-    \pause
-
-    \begin{TUMCodeBlock}{Code Blöcke mit Sprache}{markdown}
+    \begin{TUMCodeBlock}{Code Blocks with syntax highlighting}{markdown}
         ```rust
         fn main() {
             println!("Hello World!");
@@ -392,7 +388,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Markdown Flavors}
-    Nachdem Markdown eine sehr limitierte Sprache ist und relativ wenige features unterstützt, gibt es verschiedene Erweiterung die man \emph{Flavors} nennt:
+    Since Markdown is a very limited language and supports relatively few features, there are different extensions called \emph{Flavors}:
     \begin{itemize}
         \item \myhref{https://github.github.com/gfm}{GitHub Flavored Markdown}
         \item \myhref{https://fletcherpenney.net/multimarkdown}{MultiMarkdown}
@@ -401,26 +397,26 @@
 
     \vspace{3mm}
 
-    Leider gibt es hier keinen wirklichen Standard.
+    There exists no official standard for Markdown, so every implementation can have its own features.
 \end{frame}
 
-\begin{frame}[fragile]{Markdown mit \LaTeX{} Math}
-    Viele Markdown Renderer unterstützen es, \LaTeX{} Mathe Blöcke zu schreiben.
+\begin{frame}[fragile]{Markdown with \LaTeX{} Math}
+    Many Markdown renderers support writing \LaTeX{} math blocks.
 
-    Unter anderem auch unsere Chatplatform \myhref{https://zulip.in.tum.de}{Zulip} (mithilfe von \myhref{https://katex.org}{KaTeX}).
+    for example our chat platform \myhref{https://zulip.in.tum.de}{Zulip} (using \myhref{https://katex.org}{KaTeX}).
 
     \vspace{3mm}
 
-    Inline Math mit \$\$:
+    Inline Math with \$\$:
     \begin{TUMCodeBlock}{}{markdown}
-        Der Satz des Pythagoras: $$a^2 + b^2 = c^2$$
+        Pythagorean theorem: $$a^2 + b^2 = c^2$$
     \end{TUMCodeBlock}
 
     \vspace{3mm}
 
-    Display Math mit einem \TUMCodeInline{text}{math} code block:
+    Display Math with a \TUMCodeInline{text}{math} code block:
     \begin{TUMCodeBlock}{}{markdown}
-        Der Satz des Pythagoras:
+        Pythagorean theorem:
         ```math
         a^2 + b^2 = c^2
         ```
