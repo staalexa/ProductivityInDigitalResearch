@@ -284,36 +284,62 @@ Continuous Integration (CI) is an ``automated user'' that clones a repository, c
     \end{columns}
 \end{frame}
 
-\section{CI with GitLab}
-
 \begin{frame}[c]{CI with GitLab}
 	\centering
     \includegraphics[width=15cm]{resources/ci-gitlab}
 \end{frame}
 
 
-\begin{frame}[c]{Configuring CI}
-			\textbf{.gitlab-ci.yml}
-            \begin{itemize}
-            \item 
-            Configures the CI instance
-            \item
-            Collects the commands forming a \textbf{CI pipeline}
-            \end{itemize}
-	\centering
-    \includegraphics[width=10cm]{resources/ciyaml2.png}
+\begin{frame}[fragile]{Configuring CI}
+			\textbf{.gitlab-ci.yml} configures the CI instance and collects the commands forming a \textbf{CI pipeline}.
+
+	% \centering
+    %\includegraphics[width=10cm]{resources/ciyaml2.png}
+\begin{TUMCodeBlock}{.gitlab-ci.yml}{markdown}
+# image of an OS
+image: ubuntu:20.04
+
+pytest:
+  stage: test
+  before_script:
+    # update ubuntu
+    - apt-get update
+    # install pip
+    - apt-get install -y python3-pip
+    # install python packages
+    - pip3 install pytest
+  script:
+    # run pytest
+    - pytest
+\end{TUMCodeBlock}
+            
+            
 \end{frame}
 
-\begin{frame}[c]{Configuring CI}
-			\textbf{.gitlab-ci.yml}
-            \begin{itemize}
-            \item 
-            Configures the CI instance
-            \item
-            Collects the commands forming a \textbf{CI pipeline}
-            \end{itemize}
-	\centering
-    \includegraphics[width=10cm]{resources/ciyaml2.png}
+\begin{frame}[fragile]{Configuring CI}
+			Adding unit test coverage.
+
+	% \centering
+    %\includegraphics[width=10cm]{resources/ciyaml2.png}
+\begin{TUMCodeBlock}{.gitlab-ci.yml}{markdown}
+# image of an OS
+image: ubuntu:20.04
+
+pytest:
+  stage: test
+  before_script:
+    # update ubuntu
+    - apt-get update
+    # install pip
+    - apt-get install -y python3-pip
+    # install python packages
+    - pip3 install pytest pytest-cov
+  script:
+    # run pytest
+    - pytest --cov --cov-report term
+\end{TUMCodeBlock}
+            
+            
 \end{frame}
 
 
