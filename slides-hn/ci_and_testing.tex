@@ -129,25 +129,111 @@ Testing Frameworks provide easy software testing.
 \item pytest is a popular ecosystem for testing python code \url{https://docs.pytest.org/en/stable/}
 \item Mocha is a popular ecosystem for testing python code \url{https://github.com/mochajs/mocha}
 \end{itemize}
-
-\centering
-\includegraphics[width=4cm]{resources/unittesting.png}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=7cm]{resources/pytest1.png}
+\end{column}
+\begin{column}{0.5\textwidth}
+\vspace{1cm}
+\includegraphics[width=7cm]{resources/pytest2.png} 
+\end{column}
+\end{columns}
+  
       
 \end{frame}
 
 
-\begin{frame}{pytest usage}
-        
+\begin{frame}[fragile]{pytest Hands-On}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \begin{TUMCodeBlock}{src/my$\_$math.py}{python}
+def add_numbers(f1, f2):
+	return f1 + f2
+def subtract_numbers(f1, f2):
+	return f1 - f2
+def multiply_numbers(f1, f2):
+	return f1 * f2
+            \end{TUMCodeBlock}
 
-\includegraphics[width=7cm]{resources/pytest1.png}
-   
-\vspace{.3cm}
+            \begin{TUMCodeBlock}{src/example.py}{python}
+from my_math import *
+
+print("* Addition:")
+print(" If I add 5 and 8, I get " + str(add_numbers(5, 8)) + ".")
+print("* Subtraction:")
+print(" If I subtract 5 from 8, I get " + str(subtract_numbers(8, 5)) + ".")
+            \end{TUMCodeBlock}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+
+        \end{column}
+    \end{columns}
+\end{frame}
 
 
-\includegraphics[width=7cm]{resources/pytest2.png} 
+\begin{frame}[fragile]{pytest Hands-On}
+    \begin{columns}
+        \begin{column}{0.6\textwidth}
+            \begin{TUMCodeBlock}{src/my$\_$math.py}{python}
+def add_numbers(f1, f2):
+	return f1 + f2
+def subtract_numbers(f1, f2):
+	return f1 - f2
+def multiply_numbers(f1, f2):
+	return f1 * f2
+            \end{TUMCodeBlock}
+
+            \begin{TUMCodeBlock}{src/example.py}{python}
+from my_math import *
+
+print("* Addition:")
+print(" If I add 5 and 8, I get " + str(add_numbers(5, 8)) + ".")
+print("* Subtraction:")
+print(" If I subtract 5 from 8, I get " + str(subtract_numbers(8, 5)) + ".")
+            \end{TUMCodeBlock}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{TUMCodeBlock}{test/test$\_$example$\_$add.py}{python}
+from src.my_math import add_numbers
+
+
+def test_add_numbers():
+    result = add_numbers(1, 2)
+    assert result == 3
+            \end{TUMCodeBlock}
+            \begin{TUMCodeBlock}{test/test$\_$example$\_$subtract.py}{python}
+from src.my_math import subtract_numbers
+
+
+def test_subtract_numbers():
+    result = subtract_numbers(1, 2)
+    assert result == -1
+            \end{TUMCodeBlock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{pytest Hands-On}
+    \begin{columns}
+        \begin{column}{0.2\textwidth}
+            \begin{TUMCodeBlock}{pytest.ini}{python}
+[pytest]
+pythonpath = .
+            \end{TUMCodeBlock}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+        \vspace{1cm}
+            \includegraphics[width=\columnwidth]{resources/pytestmath}
+        \end{column}
+    \end{columns}
 
 
 \end{frame}
+
+
 
 
 \section{Continuous Integration}
@@ -155,7 +241,6 @@ Testing Frameworks provide easy software testing.
 \begin{frame}{Continuous Integration}{Motivation}
     \begin{enumerate}
         \item In code development, it is interesting to see whether any change breaks the compilation or execution of the code.
-        \item In particular in collaborative development, it is key to find out which change or combination of changes broke the code.
         \item Manually checking is very cumbersome.
         \item For popular code, checking a variety of operating systems, compilers, etc. is important.
         \item Best scenario: check after every change in the software repository.
@@ -203,7 +288,7 @@ Continuous Integration (CI) is an ``automated user'' that clones a repository, c
 
 \begin{frame}[c]{CI with GitLab}
 	\centering
-    \includegraphics[width=15cm]{resources/ci-gitlab.JPG}
+    \includegraphics[width=15cm]{resources/ci-gitlab}
 \end{frame}
 
 
@@ -230,8 +315,6 @@ Continuous Integration (CI) is an ``automated user'' that clones a repository, c
 	\centering
     \includegraphics[width=10cm]{resources/ciyaml2.png}
 \end{frame}
-
-
 
 
 \end{document}
