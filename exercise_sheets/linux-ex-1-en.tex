@@ -11,7 +11,7 @@
     {\draw[-latex, draw=#1, very thick] (#2.south) |- (mid) -| (#3.north);}
 }
 
-\subtitle{Linux Exercise\textemdash Part 1}
+\subtitle{Linux Exercise}
 
 \begin{document}
 
@@ -46,6 +46,35 @@ Please follow the \emph{WSL} \myhref{https://learn.microsoft.com/en-us/windows/w
 Since MacOS, like Linux, is based on UNIX, most of the tasks can be processed directly with MacOS.
 
 Install the package manager \myhref{https://brew.sh}{Homebrew}. If you encounter any problems during the installation, feel free to ask your tutor for help!
+
+\section{SSH}
+In this section, we will use \myhref{https://en.wikipedia.org/wiki/Secure_Shell}{Secure Shell (SSH)} to connect to our "Rechnerhalle" (computer room) in Garching. \emph{SSH} is a network protocol that allows secure communication between two computers. It is often used to remotely access a computer or to transfer files between two computers. 
+
+\begin{exercise}[subtitle=Establishing a connection]
+    Use the command \mintinline{text}{ssh go12abc@lxhalle.in.tum.de} to connect to the "Rechnerhalle".
+    Later on, you can also connect via \myhref{https://wiki.ito.cit.tum.de/bin/view/Informatik/Benutzerwiki/RemoteDesktop/#HRDPClients}{Remote Desktop}. For this section, however, we will use the terminal.
+\end{exercise}
+
+\begin{exercise}[subtitle=(*)Change password]
+    Change your password using the command \mintinline{text}{passwd}. Use a password that is secure but easy to remember (or even better: use a password manager like \myhref{https://bitwarden.com/}{BitWarden} or \myhref{https://keepassxc.org/}{KeypassXC}.
+\end{exercise}
+
+\begin{exercise}[subtitle=SSH Keys]
+    SSH keys are used to make connecting via SSH simpler. They allow quick and safe
+    authorization.
+    In short, you have a "public key" and a "private key". As the names suggest, the private key is private and should never be moved to another machine. 
+    The public key on the other hand can be given to anyone and is only useful if you also have access to the corresponding private key.
+    The commands entered in the following sections can be quite long. Remember to use the Tab key to open options for autocompletion and that you can always cancel a
+    command by using \mintinline{text}{Ctrl+C}.
+
+    \begin{enumerate}
+        \item Generate a new key pair on your device with the command \mintinline{sh}{ssh-keygen -t ed25519}. You can just confirm the file names by pressing Enter and do not need to change anything here (unless you want to, of course).
+        \item Now the public key has to be transmitted to the computer hall. The easiest way to do this is by using the command: \newline
+            \mintinline{sh}{ssh-copy-id -i ~/.ssh/id\_ed25519 go12abc@lxhalle.in.tum.de}. 
+            \footnote{In some cases, this easy way does not work and you have to explicitly copy the public key and paste it into file \mintinline{sh}{~/.ssh/authorized_keys}} 
+        \item You will now be prompted to enter your password for the "Rechnerhalle". You may also have to write "yes" to confirm that you trust the connection.
+        \item After the key has been successfully transferred, you can now connect to the "Rechnerhalle" without entering a password. Try it out with the command \mintinline{sh}{ssh go12abc@lxhalle.in.tum.de}.
+\end{exercise}
 
 \section{Important}
 
@@ -104,16 +133,16 @@ As already discussed in the lecture, the goal is not that you know every command
     \begin{enumerate}
         \item absolute path
         \item relative path
-        \item path containing a \mintinline{text}{~} (assume you are logged in as the user ``prof'')
+        \item path containing a \mintinline{text}{~} (assume you are logged in as the user "prof")
     \end{enumerate}
 \end{exercise}
 
 \begin{solution}
     Green:
     \begin{enumerate}
-        \item \mintinline{text}{/home/prof/Pictures}
-        \item \mintinline{text}{../prof/Pictures}
-        \item \mintinline{text}{~/Pictures}
+        \item \mintinline{text}{/home/prof/Heilbronn/Lectures}
+        \item \mintinline{text}{../prof/Heilbronn/Lectures}
+        \item \mintinline{text}{~/Heilbronn/Lectures}
     \end{enumerate}
     Red:
     \begin{enumerate}
@@ -177,7 +206,7 @@ As already discussed in the lecture, the goal is not that you know every command
 \begin{exercise}[subtitle=Listing Directories and Hidden Files with \texttt{ls}]
     Read through the \mintinline{text}{man} page for \mintinline{text}{ls}.
     \begin{enumerate}
-        \item How are files ``hidden'' in linux? How can you list such files?
+        \item How are files "hidden" in linux? How can you list such files?
         \item Is \mintinline{text}{..} displayed in the root directory? How can you find this out without leaving your current directory?
         \item List \textbf{all} files in your current directory, except for \mintinline{text}{.} and \mintinline{text}{..}, color the names of directories and sort the files by newest access time.
     \end{enumerate}
@@ -185,7 +214,7 @@ As already discussed in the lecture, the goal is not that you know every command
 
 \begin{solution}
     \begin{enumerate}
-        \item ``Hidden'' files start with a dot. You can list them with \mintinline{text}{ls -a}
+        \item "Hidden" files start with a dot. You can list them with \mintinline{text}{ls -a}
         \item \mintinline{text}{ls -a /}
         \item \mintinline{text}{ls -Altu --color=auto} or \mintinline{text}{ls -A -l -t -u --color=auto} (or any permutation of these flags)
     \end{enumerate}
@@ -216,7 +245,7 @@ As already discussed in the lecture, the goal is not that you know every command
 
 \begin{solution}
     \begin{enumerate}
-        \item There is no ``Recycle Bin'' from which one could explicitly recover a file. Nevertheless, files are not erased completely from the physical medium. One could recover a file with enough effort.
+        \item There is no "Recycle Bin" from which one could explicitly recover a file. Nevertheless, files are not erased completely from the physical medium. One could recover a file with enough effort.
         \item One would need to use the \mintinline{text}{--no-preserve-root} flag. (\mintinline{text}{sudo} is required as well)
     \end{enumerate}
 \end{solution}
@@ -238,8 +267,8 @@ As already discussed in the lecture, the goal is not that you know every command
     \end{enumerate}
 \end{solution}
 
-\begin{exercise}[subtitle=Viewing and editing files with \texttt{cat}, \texttt{less} and \texttt{nano}]
-    Read through the \mintinline{text}{man} page for \mintinline{text}{cp} and \mintinline{text}{mv}.
+\begin{exercise}[subtitle=Viewing and editing files]
+    Note: The \mintinline{text}{man} page for \mintinline{text}{cat}, \mintinline{text}{less} and \mintinline{text}{nano} may be useful.
     \begin{enumerate}
         \item Create a file named \mintinline{text}{notes.txt} and add some text to it using \mintinline{text}{nano}.
         \item View the contents of \mintinline{text}{notes.txt} using the \mintinline{text}{cat} command.
@@ -261,7 +290,7 @@ As already discussed in the lecture, the goal is not that you know every command
     \begin{enumerate}
         \item Create a file named \mintinline{text}{secret.txt} and restrict access to it so that only the owner can read and write to it.
         \item (*) Create a file named \mintinline{text}{public.txt} and give the owner full access, but only read access to others.
-    \end{exercise}
+    \end{enumerate}
 \end{exercise}
 
 \begin{solution}
@@ -282,18 +311,18 @@ As already discussed in the lecture, the goal is not that you know every command
 
 \section{Control Operators}
 
-In the lecture you have already learned about the control operators \mintinline{text}{||}, \mintinline{text}{&&}, \mintinline{text}{;}, \mintinline{text}{&}, \mintinline{text}{>}, \mintinline{text}{>>} and \mintinline{text}{|} (also called ``Pipe''). In the following tasks, you will practice using these operators.
+In the lecture you have already learned about the control operators \mintinline{text}{||}, \mintinline{text}{&&}, \mintinline{text}{;}, \mintinline{text}{&}, \mintinline{text}{>}, \mintinline{text}{>>} and \mintinline{text}{|} (also called "Pipe"). In the following tasks, you will practice using these operators.
 
 \begin{exercise}[subtitle=Pipes and Output Redirection]
     % study1.txt and study2.txt are in the /exercises/resources/ folder
     On \myhref{https://www.moodle.tum.de}{Moodle}, in addition to these exercise sheets, you will also find the following two text files: \mintinline{text}{study1.txt} and \mintinline{text}{study2.txt} (both files contain a subset of the study courses offered by TUM). For this task, the commands \mintinline{text}{sort} and \mintinline{text}{uniq} are helpful (skim the associated \mintinline{text}{man} pages if needed).
     \begin{enumerate}
         \item Print the contents of both files using the command \mintinline{text}{cat}.
-        \item Can the previous invocation of \mintinline{text}{cat} be optimized to output a large number of files without having to explicitly specify every file? Find out about ``globbing'' on the Internet in this regard.
+        \item Can the previous invocation of \mintinline{text}{cat} be optimized to output a large number of files without having to explicitly specify every file? Find out about "globbing" on the Internet in this regard.
         \item Specify two commands which can be used to output the contents of  \mintinline{text}{study1.txt} and \mintinline{text}{study2.txt} sorted respectively.
         \item Now, in the sorted output of both files, additionally eliminate all duplicates without changing the files.
         \item Output in one command the contents of both files sorted and free of duplicates. How could you save this output in a new file named \mintinline{text}{study-all.txt}?
-        \item Add the study program ``Medizin'' to the file \mintinline{text}{study-all.txt} (without deleting the existing content). Then sort the file again.
+        \item Add the study program "Medizin" to the file \mintinline{text}{study-all.txt} (without deleting the existing content). Then sort the file again.
         \item (*) Now print the first and last 4 lines of \mintinline{text}{study-all.txt} (The commands \mintinline{text}{head} and \mintinline{text}{tail} may be helpful).
     \end{enumerate}
 \end{exercise}
