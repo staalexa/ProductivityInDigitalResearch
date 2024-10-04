@@ -17,11 +17,23 @@
 \maketitle
 
 \section{Installation}
- Install pytest in your python environment. You can do this by running the following command:
+	Make sure you have \myhref{https://www.python.org/downloads/}{Python} installed on your system. You can check this by running the following command:
 
-            \begin{minted}{sh}
-                $ pip install pytest
-            \end{minted}
+	\begin{minted}{sh}
+		$ python --version
+	\end{minted}
+
+	Install pytest in your python environment. You can do this by running the following command:
+
+	\begin{minted}{sh}
+		$ pip install pytest
+	\end{minted}
+
+	alternatively, you can also install it via the provided requirements file:
+
+	\begin{minted}{sh}
+		$ pip install -r requirements.txt
+	\end{minted}
 
 \section{"It works on my machine"}
 
@@ -29,7 +41,7 @@
 In this exercise, you will write your first unit test.
     \begin{enumerate}
         \item Clone the repository with the code that shall be tested.
-	\item Import the functions of \mintinline{sh}{app.py} into \mintinline{sh}{pytest}
+		\item Import the functions of \mintinline{sh}{my_math.py} into \mintinline{sh}{pytest}
         \item Write unit tests to ensure that all methods work correctly. Can your tests identify the broken function?
         \item Why are tests important? What can happen if code is not tested properly before it is merged?
     \end{enumerate}
@@ -37,7 +49,7 @@ In this exercise, you will write your first unit test.
 
 \begin{solution}
     \begin{enumerate}
-        \item \mintinline{sh}{git clone https://tum.de/}
+        \item \mintinline{sh}{git clone https://tum.de/} // TODO
 	\item To use the functions in the test, we need to import them in the test file with the following line: \mintinline{py}{from main import add, subtract, multiply, divide}
         \item 
             \begin{enumerate}
@@ -65,6 +77,52 @@ In this exercise, you will write your first unit test.
             You can run your tests by opening a terminal and using the following command: \mintinline{sh}{pytest}
 	\item If we do not test our code properly, it might break other components of the software. Therefore, tests are an important topic in quality assurance. The recent incident with cybersecurity company "Crowdstrike" shows what can happen if tests are not working as they should.
     \end{enumerate}
+\end{solution}
+
+
+\section{CI/CD}
+
+\begin{exercise}
+    While working on a larger project, seval people write different parts of code independently. Their work is merged in the way you have seen in the previous exercises. To ensure that the code is not only merged, but also works as intended, most repositories include a so called "CI/CD-pipeline". In this exercise, you will create your own pipeline to run Unit tests automatically after each commit.
+
+    \begin{enumerate}
+		\item Use the already existing repository from section 2 and push it into a GitLab repository. Then, create a new branch called \mintinline{sh}{ci-cd}.
+		\item Create a new file called \mintinline{sh}{.gitlab-ci.yml} in the root directory of your repository. This file will contain the pipeline configuration.
+		\item Now create a CI/CD pipeline that runs the tests in the \mintinline{sh}{my_math.py} file after each commit. Push your changes to the repository and check if the pipeline runs successfully.
+		\item *Bonus: Modify the \mintinline{sh}{src/my_math.py} file so that one of the tests fails. Push the changes to the repository and check if the pipeline fails.
+	\end{enumerate}
+\end{exercise}
+
+\begin{solution}
+	\begin{enumerate}
+		\item \begin{minted}{sh}
+			git checkout -b ci-cd
+		\end{minted}
+		\item \begin{minted}{sh}
+			touch .gitlab-ci.yml
+		\end{minted}
+		\item \begin{minted}{yaml}
+		#.gitlab-ci.yaml
+		stages:
+			- test
+
+		run_tests:
+			stage: test
+			image: python:3.11  # Use the appropriate Python version
+			before_script:
+				- pip install -r requirements.txt  # Install dependencies  
+			script:
+				- pytest --junitxml=report.xml  # Run pytest and generate report
+
+			artifacts:
+				when: always
+				reports:
+				junit: report.xml  # Upload the JUnit report to GitLab
+				paths:
+				- report.xml       # Save the report as an artifact
+
+		\end{minted}
+	\end{enumerate}
 \end{solution}
 
 \end{document}
