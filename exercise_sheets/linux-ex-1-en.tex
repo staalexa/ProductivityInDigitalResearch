@@ -36,8 +36,8 @@ We would advise against the use of a \emph{Virtual Machine} for this course.
 Although the \emph{WSL} is a useful tool, it is often convenient to have access to a Linux system running directly on your computer. A \emph{DualBoot} is a suitable way for Windows users to additionally install a full Linux system besides ther Windows installation. Setting up a DualBoot is a bit more complicated than other methods (\emph{which is why we don't set up a DualBoot during the tutorial!}), but it is something to be aware of. Here are some useful resources to learn about it at home (but you can also find many additional tutorials and guides by simply searching the internet):
 
 \begin{itemize}
-    \item \myurl{https://wiki.ubuntuusers.de/Dualboot}
-    \item \myurl{https://wiki.archlinux.org/title/Dual_boot_with_Windows}
+    \item \myurl{https://wiki.ubuntuusers.de/Dualboot}{}
+    \item \myurl{https://wiki.archlinux.org/title/Dual_boot_with_Windows}{}
 \end{itemize}
 
 Please follow the \emph{WSL} \myhref{https://learn.microsoft.com/en-us/windows/wsl/install}{installation~guide} provided by Microsoft. If you encounter any problems during the installation process, feel free to ask your tutor for help! Once the \emph{WSL} is installed you will have everything you need to work on the tasks.
@@ -74,6 +74,7 @@ In this section, we will use \myhref{https://en.wikipedia.org/wiki/Secure_Shell}
             \footnote{In some cases, this easy way does not work and you have to explicitly copy the public key and paste it into file \mintinline{sh}{~/.ssh/authorized_keys}} 
         \item You will now be prompted to enter your password for the "Rechnerhalle". You may also have to write "yes" to confirm that you trust the connection.
         \item After the key has been successfully transferred, you can now connect to the "Rechnerhalle" without entering a password. Try it out with the command \mintinline{sh}{ssh go12abc@lxhalle.in.tum.de}.
+    \end{enumerate}
 \end{exercise}
 
 \section{Important}
