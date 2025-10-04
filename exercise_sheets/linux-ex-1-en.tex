@@ -1,6 +1,7 @@
 \documentclass[english]{sheet}
 
 \usepackage{tikz}
+\usepackage{minted}
 \usetikzlibrary{calc}
 \usetikzlibrary{positioning}
 
@@ -17,7 +18,7 @@
 
 \maketitle
 
-\textit{Exercises marked with a (*) are bonus tasks und should only be done if there is enough time left.}
+\textit{Exercises marked with a (*) are bonus tasks and should only be done if there is enough time left.}
 
 \section{Setup}
 
@@ -41,6 +42,7 @@ Although the \emph{WSL} is a useful tool, it is often convenient to have access 
 \end{itemize}
 
 Please follow the \emph{WSL} \myhref{https://learn.microsoft.com/en-us/windows/wsl/install}{installation~guide} provided by Microsoft. If you encounter any problems during the installation process, feel free to ask your tutor for help! Once the \emph{WSL} is installed you will have everything you need to work on the tasks.
+In short: open PowerShell as administrator and run the command \mintinline{text}{wsl --install}. Once its finished, install a Linux distribution (e.g. Ubuntu 24.04) with \mintinline{text}{wsl --install Ubuntu-24.04}.
 
 \subsection{MacOS}
 Since MacOS, like Linux, is based on UNIX, most of the tasks can be processed directly with MacOS.
@@ -56,7 +58,7 @@ In this section, we will use \myhref{https://en.wikipedia.org/wiki/Secure_Shell}
 \end{exercise}
 
 \begin{exercise}[subtitle=(*)Change password]
-    Change your password using the command \mintinline{text}{passwd}. Use a password that is secure but easy to remember (or even better: use a password manager like \myhref{https://bitwarden.com/}{BitWarden} or \myhref{https://keepassxc.org/}{KeypassXC}.
+    Change your password using the command \mintinline{text}{passwd}. Use a password that is secure but easy to remember (or even better: use a password manager like \myhref{https://bitwarden.com/}{BitWarden} or \myhref{https://keepassxc.org/}{KeypassXC}).
 \end{exercise}
 
 \begin{exercise}[subtitle=SSH Keys]
@@ -310,22 +312,13 @@ As already discussed in the lecture, the goal is not that you know every command
     \end{enumerate}
 \end{exercise}
 
-\begin{solution}
-    \begin{enumerate}
-        \item \mintinline{sh}{find ~ -name "*.txt"}
-        \item \mintinline{sh}{find /home -mtime -7}
-        \item \mintinline{sh}{grep Linux notes.txt}
-        \item \mintinline{sh}{grep -r Linux .}
-    \end{enumerate}
-\end{solution}
-
 \section{Control Operators}
 
 In the lecture you have already learned about the control operators \mintinline{text}{||}, \mintinline{text}{&&}, \mintinline{text}{;}, \mintinline{text}{&}, \mintinline{text}{>}, \mintinline{text}{>>} and \mintinline{text}{|} (also called "Pipe"). In the following tasks, you will practice using these operators.
 
 \begin{exercise}[subtitle=Pipes and Output Redirection]
     % study1.txt and study2.txt are in the /exercises/resources/ folder
-    On \myhref{https://www.moodle.tum.de}{Moodle}, in addition to these exercise sheets, you will also find the following two text files: \mintinline{text}{study1.txt} and \mintinline{text}{study2.txt} (both files contain a subset of the study courses offered by TUM). For this task, the commands \mintinline{text}{sort} and \mintinline{text}{uniq} are helpful (skim the associated \mintinline{text}{man} pages if needed).
+    On \myhref{https://www.moodle.tum.de/mod/folder/view.php?id=3531175}{Moodle}, in addition to these exercise sheets, you will also find the following two text files: \mintinline{text}{study1.txt} and \mintinline{text}{study2.txt} (both files contain a subset of the study courses offered by TUM). For this task, the commands \mintinline{text}{sort} and \mintinline{text}{uniq} are helpful (skim the associated \mintinline{text}{man} pages if needed).
     \begin{enumerate}
         \item Print the contents of both files using the command \mintinline{text}{cat}.
         \item Can the previous invocation of \mintinline{text}{cat} be optimized to output a large number of files without having to explicitly specify every file? Find out about "globbing" on the Internet in this regard.

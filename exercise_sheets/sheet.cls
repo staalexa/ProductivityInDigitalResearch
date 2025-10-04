@@ -114,6 +114,6 @@
 }
 
 \author{Adrian Stein Thomas Lindae Alexandros Stathakopoulos} % modify here and include the names in some copyright page
-\date{October 2024}
+\date{October 2025}
 
-\shorttitle{Productivity in digital Research WS 2024/25}
+\shorttitle{Productivity in digital Research WS 2025/26}
